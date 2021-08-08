@@ -1,5 +1,6 @@
 package com.example.budgetapp.Activities;
 
+import android.accounts.Account;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,13 +22,29 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.example.budgetapp.DataManager.Model.AccountGroup;
+import com.example.budgetapp.DataManager.Model.AccountType;
+import com.example.budgetapp.DataManager.Model.Goal;
+import com.example.budgetapp.DataManager.Model.GoalDetail;
+import com.example.budgetapp.DataManager.Model.Version;
+import com.example.budgetapp.DataManager.Model.VersionEntry;
 import com.example.budgetapp.R;
+import com.example.budgetapp.ViewModel.AccountGroupViewModel;
+import com.example.budgetapp.ViewModel.GoalDetailViewModel;
+import com.example.budgetapp.ViewModel.GoalViewModel;
+import com.example.budgetapp.ViewModel.VersionViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.IllegalFormatException;
+import java.util.List;
 
 public class CreateVersion extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -64,11 +81,27 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
     private Double balance = 0.0;
     private String TAG;
 
+
+    GoalViewModel goalViewModel;
+    GoalDetailViewModel goalDetailViewModel;
+    VersionViewModel versionViewModel;
+    AccountGroupViewModel accountGroupViewModel;
+    List<Version> versionList;
+
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_version);
+
+        //DATABASE: VIEW MODELS
+        goalViewModel = new ViewModelProvider(this).get(GoalViewModel.class);
+        goalDetailViewModel = new ViewModelProvider(this).get(GoalDetailViewModel.class);
+        versionViewModel = new ViewModelProvider(this).get(VersionViewModel.class);
+        accountGroupViewModel = new ViewModelProvider(this).get(AccountGroupViewModel.class);
+
+        versionList = new ArrayList<>();
 
         //SIDEBAR MENU
         toolbar = findViewById(R.id.create_version_toolbar);
@@ -104,17 +137,14 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
         nonessentialsBar = (SeekBar) findViewById(R.id.create_version_seekBar_nonessentials);
         savingsBar = (SeekBar) findViewById(R.id.create_version_seekBar_savings);
 
-                //Set bars at 100 from the start
-
-//        nonessentialsBar.setProgress(100, true);
-//        savingsBar.setProgress(100, true);
-
         saveButton = (Button) findViewById(R.id.create_version_save_changes);
 
 
         //SETTING UP LISTENERS
-        //VersionName - gets string input
-        versionNameEntry.addTextChangedListener(new TextWatcher() {
+        //entryTextWatcher controls the listening of all the three entries.
+
+        TextWatcher entryTextWatcher = new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -122,37 +152,24 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String enteredData = versionNameEntry.getText().toString();
-                try{
-                    versionName = enteredData;
+                String enteredIncome = estimateIncomeEntry.getText().toString();
+                String enteredExpense = estimateExpensesEntry.getText().toString();
+                String enteredVName = versionNameEntry.getText().toString();
+
+                saveButton.setEnabled(!enteredVName.isEmpty() && !enteredIncome.isEmpty()
+                        && !enteredExpense.isEmpty());
+
+                try {
+                    versionName = enteredVName;
                     //debugging
                     //Toast.makeText(CreateVersion.this, versionName, Toast.LENGTH_SHORT).show();
-                } catch (IllegalFormatException ex){
+                } catch (IllegalFormatException ex) {
                     versionNameEntry.setText("");
                     versionName = "";
                 }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        //estimateIncome - gets double input
-        estimateIncomeEntry.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String enteredData = estimateIncomeEntry.getText().toString();
 
                 try {
-                    Double val = Double.parseDouble(enteredData);
+                    Double val = Double.parseDouble(enteredIncome);
                     estimateIncome = val;
                     balance = val;
                     Double fifty = val * 0.50;
@@ -160,21 +177,21 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
                     Double twenty = val * 0.20;
 
 
-                    String a= String.format("%.2f", fifty);
+                    String a = String.format("%.2f", fifty);
                     essentialsEntry.setText("$");
                     essentialsEntry.append(a);
                     essentialsValStart = fifty;
                     essentialsVal = essentialsValStart;
 
 
-                    String b= String.format("%.2f", thirty);
+                    String b = String.format("%.2f", thirty);
                     nonessentialsEntry.setText("$");
                     nonessentialsEntry.append(b);
                     nonessentialsValStart = thirty;
                     nonessentialsVal = nonessentialsValStart;
 
 
-                    String c= String.format("%.2f", twenty);
+                    String c = String.format("%.2f", twenty);
                     savingsEntry.setText("$");
                     savingsEntry.append(c);
                     savingsValStart = twenty;
@@ -186,68 +203,53 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
                     savingsBar.setProgress(20, true);
 
 
-
-                } catch(NumberFormatException e){
+                } catch (NumberFormatException e) {
                     essentialsEntry.setText("$0");
                     nonessentialsEntry.setText("$0");
                     savingsEntry.setText("$0");
                 }
 
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        //estimateExpenses - gets double input
-        estimateExpensesEntry.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String enteredData = estimateExpensesEntry.getText().toString();
-
                 try {
-                    Double val = Double.parseDouble(enteredData);
+                    Double val = Double.parseDouble(enteredExpense);
 
                     estimateExpenses = val;
-                } catch(NumberFormatException e){
+                } catch (NumberFormatException e) {
                     nonessentialsEntry.setText("$0");
                 }
+
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
 
             }
-        });
+        };
+
+        estimateIncomeEntry.addTextChangedListener(entryTextWatcher);
+        estimateExpensesEntry.addTextChangedListener(entryTextWatcher);
+        versionNameEntry.addTextChangedListener(entryTextWatcher);
 
         //Scrollbar changing values
         //essentials bar
         essentialsBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-             //Double half = (i*(estimateIncome/100.0));
-             Double val = (i*(estimateIncome/100.0));
+                //Double half = (i*(estimateIncome/100.0));
+                Double val = (i * (estimateIncome / 100.0));
 
-             //Toast.makeText(CreateVersion.this, val.toString(), Toast.LENGTH_SHORT).show();
-             essentialsEntry.setText("$");
-             essentialsEntry.append(val.toString());
-             essentialsVal = val;
-             Log.d(TAG, "essentialsVal: " + essentialsVal);
-             //Toast.makeText(CreateVersion.this, essentialsVal.toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CreateVersion.this, val.toString(), Toast.LENGTH_SHORT).show();
+                essentialsEntry.setText("$");
+                essentialsEntry.append(val.toString());
+                essentialsVal = val;
+                Log.d(TAG, "essentialsVal: " + essentialsVal);
+                //Toast.makeText(CreateVersion.this, essentialsVal.toString(), Toast.LENGTH_SHORT).show();
 
-             //balance = essentialsVal;
-             balance = estimateIncome - essentialsVal - nonessentialsVal - savingsVal;
+                //balance = essentialsVal;
+                balance = estimateIncome - essentialsVal - nonessentialsVal - savingsVal;
                 Log.d(TAG, "balance: " + balance);
 
 
-               // Log.d(TAG, "Balance at last try: " + balance);
+                // Log.d(TAG, "Balance at last try: " + balance);
                 remainingBalance.setText("$");
                 remainingBalance.append(balance.toString());
                 if (balance < 0) {
@@ -275,7 +277,7 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
         nonessentialsBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                Double val = (i*(estimateIncome/100.0));
+                Double val = (i * (estimateIncome / 100.0));
                 //Toast.makeText(CreateVersion.this, val.toString(), Toast.LENGTH_SHORT).show();
                 nonessentialsEntry.setText("$");
                 nonessentialsEntry.append(val.toString());
@@ -313,7 +315,7 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
         savingsBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                Double val = (i*(estimateIncome/100.0));
+                Double val = (i * (estimateIncome / 100.0));
                 //Toast.makeText(CreateVersion.this, val.toString(), Toast.LENGTH_SHORT).show();
                 savingsEntry.setText("$");
                 savingsEntry.append(val.toString());
@@ -351,11 +353,106 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
             @Override
             public void onClick(View view) {
 
+                Goal goal = new Goal(versionName);
+
+                AccountGroup accGroup = new AccountGroup(versionName);
+
+                Version version = new Version(versionName);
+
+                //AccountType accType = new AccountType(accGroup.getAccountGroupName(), accGroup.getId(), "")
+
+                //VersionViewModel
+                versionViewModel.insertVersion(version);
+
+                //GoalViewModel
+                goalViewModel.insertGoal(goal);
+
+                //AccountGroupViewModel
+                accountGroupViewModel.insertAccountGroup(accGroup);
+
+                Log.d(TAG, "goal.getId(): " + goal.getId());
+                Log.d(TAG, "accGroup.getId() " + accGroup.getId());
+                Log.d(TAG, "version.getId() " + version.getId());
+
+                //GoalDetail
+                GoalDetail essentials = new GoalDetail(goal.getId(), accGroup.getId(), essentialsVal, version.getId());
+                GoalDetail nonessentials = new GoalDetail(goal.getId(), accGroup.getId(), nonessentialsVal, version.getId());
+                GoalDetail savings = new GoalDetail(goal.getId(), accGroup.getId(), savingsVal, version.getId());
+
+                if(essentials==null){
+                    Toast.makeText(getApplicationContext(), "null", Toast.LENGTH_SHORT).show();
+                }
+
+                Log.d(TAG, "onClick: AFTER CREATING GOAL DETAIL");
+                goalDetailViewModel.insertGoalDetail(essentials);
+                goalDetailViewModel.insertGoalDetail(nonessentials);
+                goalDetailViewModel.insertGoalDetail(savings);
+
+                Log.d(TAG, "onClick: AFTER INSERTING GOAL DETAIL");
+
+
+                //VersionViewModel display
+                versionViewModel.getAllVersion().observe(CreateVersion.this, versions -> {
+                    Log.d(TAG, "VeersionViewModel Observed is WOKRING ");
+
+                   // int version1 = versions.indexOf(0);
+                   // Log.d(TAG, "version1: " + version1);
+                    try {
+
+                        for (Version v : versions) {
+                            Log.d(TAG, "version id= " + v.getId());
+                            Log.d(TAG, "version name= " + v.getVersionName());
+                        }
+                    } catch (NullPointerException e) {
+                        e.getMessage();
+                    }
+
+                    Log.d(TAG, "versionViewModel Observed AFTER PRINTING ");
+                });
+
+                //GoalViewModel display
+                goalViewModel.getAllGoal().observe(CreateVersion.this, goals -> {
+                    Log.d(TAG, "GoalViewModel Observed is WOKRING ");
+
+                    //int goals1 = goals.indexOf(0);
+                   // Log.d(TAG, "goals1: " + goals1);
+                    try {
+
+                        for (Goal v : goals) {
+                            Log.d(TAG, "goal id= " + v.getId());
+                            Log.d(TAG, "goal name= " + v.getGoalName());
+                        }
+                    } catch (NullPointerException e) {
+                        e.getMessage();
+                    }
+
+                    Log.d(TAG, "GoalViewModel Observed AFTER PRINTING ");
+                });
+
+                //AccountGroupViewModel display
+                accountGroupViewModel.getAllAccountGroup().observe(CreateVersion.this, accgroup -> {
+                    Log.d(TAG, "AccountGroupViewModel Observed is WOKRING ");
+
+                    //int accgroup1 = accgroup.indexOf(0);
+                    //Log.d(TAG, "accgroup1: " + accgroup1);
+                    try {
+
+                        for (AccountGroup v : accgroup) {
+                            Log.d(TAG, "acc group id= " + v.getId());
+                            Log.d(TAG, "acc group name= " + v.getAccountGroupName());
+                        }
+                    } catch (NullPointerException e) {
+                        e.getMessage();
+                    }
+
+                    Log.d(TAG, "accountGroupViewModel Observed AFTER PRINTING ");
+                });
+
+
             }
         });
+
     }
-
-
     public void setActionBar(String heading){
         ActionBar actionBar = getSupportActionBar();
         //actionBar.setHomeButtonEnabled(true);
@@ -375,4 +472,7 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
+
+
+
 }

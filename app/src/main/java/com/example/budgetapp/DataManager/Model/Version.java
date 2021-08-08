@@ -10,6 +10,9 @@ public class Version {
     int id;
     String versionName;
 
+    public Version()
+    { this.versionName = "test"; }
+
     public Version(String versionName) {
         this.versionName = versionName;
     }

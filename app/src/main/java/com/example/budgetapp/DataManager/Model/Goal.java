@@ -10,11 +10,11 @@ public class Goal {
     @PrimaryKey (autoGenerate = true)
     int id;
     String goalName;
-    boolean currentGoal;
+    //boolean currentGoal;
 
-    public Goal(String goalName, boolean currentGoal) {
+    public Goal(String goalName) {
         this.goalName = goalName;
-        this.currentGoal = currentGoal;
+        //this.currentGoal = currentGoal;
 
     }
 
@@ -34,12 +34,12 @@ public class Goal {
         this.goalName = goalName;
     }
 
-    public boolean getCurrentGoal() {
-        return currentGoal;
-    }
+    //public boolean getCurrentGoal() {
+       // return currentGoal;
+    //}
 
-    public void setCurrentGoal(boolean currentGoal) {
-        this.currentGoal = currentGoal;
-    }
+    //public void setCurrentGoal(boolean currentGoal) {
+       // this.currentGoal = currentGoal;
+    //}
 }
 
