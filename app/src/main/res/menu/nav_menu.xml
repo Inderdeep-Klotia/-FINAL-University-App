@@ -4,14 +4,19 @@
     <item android:title="@string/actions">
         <menu>
             <item android:title="@string/create_version"
+                android:id="@+id/create_new_version_nav"
                 android:icon="@drawable/outline_add_white_48" />
             <item android:title="@string/modify_version"
+                android:id="@+id/modify_version_nav"
                 android:icon="@drawable/outline_add_white_48" />
             <item android:title="@string/add_transaction"
-            android:icon="@drawable/outline_add_white_48" />
+                android:id="@+id/add_transaction_nav"
+                android:icon="@drawable/outline_add_white_48" />
             <item android:title="@string/modify_transaction"
+                android:id="@+id/modify_transaction_nav"
                 android:icon="@drawable/outline_add_white_48" />
             <item android:title="@string/change_goals"
+                android:id="@+id/change_goals_nav"
                 android:icon="@drawable/outline_add_white_48" />
 
         </menu>
@@ -20,12 +25,16 @@
     <item android:title="Navigate">
         <menu>
             <item android:title="@string/view_version"
+                android:id="@+id/view_version_nav"
                 android:icon="@drawable/outline_menu_white_48" />
             <item android:title="@string/view_transaction"
+                android:id="@+id/view_transaction_nav"
                 android:icon="@drawable/outline_menu_white_48" />
             <item android:title="@string/view_goals"
+                android:id="@+id/view_goals_nav"
                 android:icon="@drawable/outline_menu_white_48" />
             <item android:title="@string/strategies"
+                android:id="@+id/strategies_nav"
                 android:icon="@drawable/outline_add_white_48" />
 
         </menu>

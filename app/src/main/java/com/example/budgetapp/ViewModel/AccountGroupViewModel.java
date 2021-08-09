@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.budgetapp.DataManager.Database.Repository;
+import com.example.budgetapp.DataManager.Model.Goal;
 import com.example.budgetapp.ViewModel.*;
 import com.example.budgetapp.DataManager.Model.AccountGroup;
 
@@ -37,6 +38,11 @@ public class AccountGroupViewModel extends AndroidViewModel {
 
     public void deleteAccountGroup(AccountGroup accountGroup) {
         repository.deleteAccountGroup(accountGroup);
+    }
+
+    public AccountGroup getAccountGroup(){
+        AccountGroup accGroup = (AccountGroup) allAccountGroup.getValue();
+        return accGroup;
     }
 
 

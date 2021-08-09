@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.budgetapp.DataManager.Database.Repository;
+import com.example.budgetapp.DataManager.Model.AccountGroup;
 import com.example.budgetapp.DataManager.Model.Version;
 
 
@@ -37,6 +38,11 @@ public class VersionViewModel extends AndroidViewModel {
 
     public void deleteVersion(Version version) {
         repository.deleteVersion(version);
+    }
+
+    public Version getVersion(){
+        Version version = (Version) allVersion.getValue();
+        return version;
     }
 
 

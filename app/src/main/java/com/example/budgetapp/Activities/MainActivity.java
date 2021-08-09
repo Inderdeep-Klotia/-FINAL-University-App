@@ -6,19 +6,29 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Pie;
+import com.example.budgetapp.DataManager.Model.Version;
 import com.example.budgetapp.R;
+import com.example.budgetapp.ViewModel.AccountGroupViewModel;
+import com.example.budgetapp.ViewModel.GoalDetailViewModel;
+import com.example.budgetapp.ViewModel.GoalViewModel;
+import com.example.budgetapp.ViewModel.VersionViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -35,12 +45,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String[] financeTypes = {"Income", "Expenses"};
     int[] financeValues = {300, 500};
 
+    //DATABASE
+
+    public static GoalViewModel goalViewModel;
+    public static GoalDetailViewModel goalDetailViewModel;
+    public static VersionViewModel versionViewModel;
+    public static AccountGroupViewModel accountGroupViewModel;
+    public static List<Version> versionList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
 
+        //DATABASE SETUP
+        goalViewModel = new ViewModelProvider(this).get(GoalViewModel.class);
+        goalDetailViewModel = new ViewModelProvider(this).get(GoalDetailViewModel.class);
+        versionViewModel = new ViewModelProvider(this).get(VersionViewModel.class);
+        accountGroupViewModel = new ViewModelProvider(this).get(AccountGroupViewModel.class);
+
+        versionList = new ArrayList<>();
 
         //SIDEBAR MENU
         toolbar = findViewById(R.id.main_menu_toolbar);
@@ -79,6 +103,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         };
 
         button_view_version.setOnClickListener(page_listener);
+
+
+
     }
 
     public void setupPieChart() {
@@ -101,7 +128,62 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+        switch(item.getItemId()){
+            case R.id.create_new_version_nav: {
+                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, CreateVersion.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.modify_version_nav: {
+                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ModifyVersion.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.add_transaction_nav: {
+                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, AddTransaction.class);
+                startActivity(intent);
+                break;
+            }
+//            case R.id.modify_transaction_nav: {
+//                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(this, ModifyTransaction.class);
+//                startActivity(intent);
+//                break;
+//            }
+//            case R.id.change_goals_nav: {
+//                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(this, ModifyGoals.class);
+//                startActivity(intent);
+//                break;
+//            }
+            case R.id.view_version_nav: {
+            //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, ViewVersion.class);
+            startActivity(intent);
+            break;
+        }
+//            case R.id.view_transaction_nav: {
+//                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(this, ViewTransaction.class);
+//                startActivity(intent);
+//                break;
+//            }case R.id.view_goals_nav: {
+//                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(this, ViewGoals.class);
+//                startActivity(intent);
+//                break;
+//            }case R.id.strategies_nav: {
+//                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(this, Introduction.class);
+//                startActivity(intent);
+//                break;
+//            }
+
+        }
+        return true;
     }
 
     @Override
@@ -119,4 +201,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         actionBar.setTitle(heading);
         actionBar.show();
     }
+
+
 }

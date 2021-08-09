@@ -11,18 +11,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BudgetApp">
 
+<!--        CREATE VERSION-->
         <activity
             android:name=".Activities.CreateVersion"
             android:screenOrientation="portrait">
 
-             <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
+<!--             <intent-filter>-->
+<!--             <action android:name="android.intent.action.MAIN" />-->
 
 
-             <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
+<!--             <category android:name="android.intent.category.LAUNCHER" />-->
+<!--             </intent-filter>-->
 
         </activity>
+
+<!--        MODIFY VERSION-->
         <activity
             android:name=".Activities.ModifyVersion"
             android:label="@string/title_activity_modify_version"
@@ -37,6 +40,7 @@
 <!--             </intent-filter>-->
         </activity>
 
+<!--        INTRODUCTION-->
         <activity
             android:name=".Activities.Introduction"
             android:noHistory="true"
@@ -51,21 +55,25 @@
 <!--             </intent-filter>-->
         </activity>
 
+<!--        VIEW VERSION-->
         <activity
             android:name=".Activities.ViewVersion"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
             android:name=".Activities.MainActivity"
             android:screenOrientation="portrait">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         </activity>
 
+<!--        ADD TRANSACTION-->
         <activity
             android:name=".Activities.AddTransaction"
             android:screenOrientation="portrait">

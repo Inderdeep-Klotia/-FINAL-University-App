@@ -39,6 +39,9 @@ public class GoalViewModel extends AndroidViewModel {
         repository.deleteGoal(goal);
     }
 
-
+    public Goal getGoal() {
+        Goal goal = (Goal) allGoal.getValue();
+        return goal;
+    }
 }
 

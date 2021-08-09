@@ -1,6 +1,6 @@
 package com.example.budgetapp.Activities;
 
-import android.accounts.Account;
+import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -22,29 +21,23 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.budgetapp.DataManager.Model.AccountGroup;
-import com.example.budgetapp.DataManager.Model.AccountType;
 import com.example.budgetapp.DataManager.Model.Goal;
 import com.example.budgetapp.DataManager.Model.GoalDetail;
 import com.example.budgetapp.DataManager.Model.Version;
-import com.example.budgetapp.DataManager.Model.VersionEntry;
 import com.example.budgetapp.R;
-import com.example.budgetapp.ViewModel.AccountGroupViewModel;
-import com.example.budgetapp.ViewModel.GoalDetailViewModel;
-import com.example.budgetapp.ViewModel.GoalViewModel;
-import com.example.budgetapp.ViewModel.VersionViewModel;
 import com.google.android.material.navigation.NavigationView;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.IllegalFormatException;
-import java.util.List;
+
+
+import static com.example.budgetapp.Activities.MainActivity.accountGroupViewModel;
+import static com.example.budgetapp.Activities.MainActivity.goalDetailViewModel;
+import static com.example.budgetapp.Activities.MainActivity.goalViewModel;
+import static com.example.budgetapp.Activities.MainActivity.versionViewModel;
 
 public class CreateVersion extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -81,12 +74,12 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
     private Double balance = 0.0;
     private String TAG;
 
-
-    GoalViewModel goalViewModel;
-    GoalDetailViewModel goalDetailViewModel;
-    VersionViewModel versionViewModel;
-    AccountGroupViewModel accountGroupViewModel;
-    List<Version> versionList;
+//
+//    public static GoalViewModel goalViewModel;
+//    public static GoalDetailViewModel goalDetailViewModel;
+//    public static VersionViewModel versionViewModel;
+//    public static AccountGroupViewModel accountGroupViewModel;
+//    public static List<Version> versionList;
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -96,12 +89,12 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
         setContentView(R.layout.activity_create_version);
 
         //DATABASE: VIEW MODELS
-        goalViewModel = new ViewModelProvider(this).get(GoalViewModel.class);
-        goalDetailViewModel = new ViewModelProvider(this).get(GoalDetailViewModel.class);
-        versionViewModel = new ViewModelProvider(this).get(VersionViewModel.class);
-        accountGroupViewModel = new ViewModelProvider(this).get(AccountGroupViewModel.class);
-
-        versionList = new ArrayList<>();
+//        goalViewModel = new ViewModelProvider(this).get(GoalViewModel.class);
+//        goalDetailViewModel = new ViewModelProvider(this).get(GoalDetailViewModel.class);
+//        versionViewModel = new ViewModelProvider(this).get(VersionViewModel.class);
+//        accountGroupViewModel = new ViewModelProvider(this).get(AccountGroupViewModel.class);
+//
+//        versionList = new ArrayList<>();
 
         //SIDEBAR MENU
         toolbar = findViewById(R.id.create_version_toolbar);
@@ -320,7 +313,7 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
                 savingsEntry.setText("$");
                 savingsEntry.append(val.toString());
                 savingsVal = val;
-                Log.d(TAG, "nonessentialsVal: " + nonessentialsVal);
+                Log.d(TAG, "savingsVal: " + savingsVal);
 
                 balance = estimateIncome - essentialsVal - nonessentialsVal - savingsVal;
                 Log.d(TAG, "balance: " + balance);
@@ -348,110 +341,77 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
             }
         });
 
+//        Goal goal = new Goal(versionName);
+//
+//        AccountGroup accGroup = new AccountGroup(versionName);
+//
+//        Version version = new Version(versionName);
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Goal goal = new Goal(versionName);
-
-                AccountGroup accGroup = new AccountGroup(versionName);
-
-                Version version = new Version(versionName);
-
-                //AccountType accType = new AccountType(accGroup.getAccountGroupName(), accGroup.getId(), "")
-
                 //VersionViewModel
-                versionViewModel.insertVersion(version);
+                versionViewModel.insertVersion(new Version(versionName));
 
                 //GoalViewModel
-                goalViewModel.insertGoal(goal);
+                goalViewModel.insertGoal(new Goal(versionName));
 
                 //AccountGroupViewModel
-                accountGroupViewModel.insertAccountGroup(accGroup);
+                accountGroupViewModel.insertAccountGroup(new AccountGroup(versionName));
 
-                Log.d(TAG, "goal.getId(): " + goal.getId());
-                Log.d(TAG, "accGroup.getId() " + accGroup.getId());
-                Log.d(TAG, "version.getId() " + version.getId());
-
-                //GoalDetail
-                GoalDetail essentials = new GoalDetail(goal.getId(), accGroup.getId(), essentialsVal, version.getId());
-                GoalDetail nonessentials = new GoalDetail(goal.getId(), accGroup.getId(), nonessentialsVal, version.getId());
-                GoalDetail savings = new GoalDetail(goal.getId(), accGroup.getId(), savingsVal, version.getId());
-
-                if(essentials==null){
-                    Toast.makeText(getApplicationContext(), "null", Toast.LENGTH_SHORT).show();
-                }
-
-                Log.d(TAG, "onClick: AFTER CREATING GOAL DETAIL");
-                goalDetailViewModel.insertGoalDetail(essentials);
-                goalDetailViewModel.insertGoalDetail(nonessentials);
-                goalDetailViewModel.insertGoalDetail(savings);
-
-                Log.d(TAG, "onClick: AFTER INSERTING GOAL DETAIL");
-
-
-                //VersionViewModel display
-                versionViewModel.getAllVersion().observe(CreateVersion.this, versions -> {
-                    Log.d(TAG, "VeersionViewModel Observed is WOKRING ");
-
-                   // int version1 = versions.indexOf(0);
-                   // Log.d(TAG, "version1: " + version1);
-                    try {
-
-                        for (Version v : versions) {
-                            Log.d(TAG, "version id= " + v.getId());
-                            Log.d(TAG, "version name= " + v.getVersionName());
-                        }
-                    } catch (NullPointerException e) {
-                        e.getMessage();
-                    }
-
-                    Log.d(TAG, "versionViewModel Observed AFTER PRINTING ");
-                });
-
-                //GoalViewModel display
-                goalViewModel.getAllGoal().observe(CreateVersion.this, goals -> {
-                    Log.d(TAG, "GoalViewModel Observed is WOKRING ");
-
-                    //int goals1 = goals.indexOf(0);
-                   // Log.d(TAG, "goals1: " + goals1);
-                    try {
-
-                        for (Goal v : goals) {
-                            Log.d(TAG, "goal id= " + v.getId());
-                            Log.d(TAG, "goal name= " + v.getGoalName());
-                        }
-                    } catch (NullPointerException e) {
-                        e.getMessage();
-                    }
-
-                    Log.d(TAG, "GoalViewModel Observed AFTER PRINTING ");
-                });
-
-                //AccountGroupViewModel display
-                accountGroupViewModel.getAllAccountGroup().observe(CreateVersion.this, accgroup -> {
-                    Log.d(TAG, "AccountGroupViewModel Observed is WOKRING ");
-
-                    //int accgroup1 = accgroup.indexOf(0);
-                    //Log.d(TAG, "accgroup1: " + accgroup1);
-                    try {
-
-                        for (AccountGroup v : accgroup) {
-                            Log.d(TAG, "acc group id= " + v.getId());
-                            Log.d(TAG, "acc group name= " + v.getAccountGroupName());
-                        }
-                    } catch (NullPointerException e) {
-                        e.getMessage();
-                    }
-
-                    Log.d(TAG, "accountGroupViewModel Observed AFTER PRINTING ");
-                });
+                openDialog();
+                //Create Dialog box
+//                Dialog dialog = new Dialog(CreateVersion.this);
+//                dialog.setContentView(R.layout.dialog_create_version_save);
+//                dialog.create();
+//                dialog.findViewById(R.id.dialog_create_version_button).setOnClickListener(new View.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View view) {
+//                        GoalDetail essentials = new GoalDetail(goalViewModel.getGoal().getId(),
+//                                accountGroupViewModel.getAccountGroup().getId(),
+//                                essentialsVal,
+//                                versionViewModel.getVersion().getId());
+//
+//                        goalDetailViewModel.insertGoalDetail(essentials);
+//
+//                        //                //GoalViewModel display
+//                        goalDetailViewModel.getAllGoalDetail().observe(CreateVersion.this, goals -> {
+//                            Log.d(TAG, "GoalViewModel Observed is WOKRING ");
+//
+//                            int goals1 = goals.indexOf(0);
+//                            Log.d(TAG, "goals1: " + goals1);
+//                            try {
+//
+//                                for (GoalDetail v : goals) {
+//
+//                                    Log.d(TAG, "goal id= " + v.getId());
+//                                    Log.d(TAG, "goal name= " + v.getGoalID());
+//                                    Log.d(TAG, "goal amount= " + v.getAmount());
+//                                }
+//                            } catch (NullPointerException e) {
+//                                e.getMessage();
+//                            }
+//
+//
+//
+//                            Log.d(TAG, "GoalViewModel Observed AFTER PRINTING ");
+//                        });
+//                   }
+//                });
+//
+//
+//
+           }
 
 
-            }
         });
 
+    }
+
+    public void openDialog(){
+        CreateVersionDialog dialog = new CreateVersionDialog();
+        dialog.show(getSupportFragmentManager(), "");
     }
     public void setActionBar(String heading){
         ActionBar actionBar = getSupportActionBar();
@@ -473,6 +433,8 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
 
     }
 
-
-
 }
+
+
+
+
