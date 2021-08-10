@@ -24,7 +24,7 @@ import com.example.budgetapp.DataManager.Model.GoalDetail;
 import com.example.budgetapp.DataManager.Model.Version;
 import com.example.budgetapp.DataManager.Model.VersionEntry;
 
-@Database(entities={AccountGroup.class, AccountType.class, Fact.class, Goal.class, GoalDetail.class, Version.class, VersionEntry.class}, version=1, exportSchema = false)
+@Database(entities={AccountGroup.class, AccountType.class, Fact.class, Goal.class, GoalDetail.class, Version.class, VersionEntry.class}, version=2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase{
     public abstract AccountGroupDao accountGroupDao();
     public abstract AccountTypeDao accountTypeDao();

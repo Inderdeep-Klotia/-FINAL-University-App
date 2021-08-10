@@ -46,12 +46,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     int[] financeValues = {300, 500};
 
     //DATABASE
-
-    public static GoalViewModel goalViewModel;
-    public static GoalDetailViewModel goalDetailViewModel;
-    public static VersionViewModel versionViewModel;
-    public static AccountGroupViewModel accountGroupViewModel;
-    public static List<Version> versionList;
+//
+//    public static GoalViewModel goalViewModel;
+//    public static GoalDetailViewModel goalDetailViewModel;
+//    public static VersionViewModel versionViewModel;
+//    public static AccountGroupViewModel accountGroupViewModel;
+//    public static List<Version> versionList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +59,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.dashboard);
 
         //DATABASE SETUP
-        goalViewModel = new ViewModelProvider(this).get(GoalViewModel.class);
-        goalDetailViewModel = new ViewModelProvider(this).get(GoalDetailViewModel.class);
-        versionViewModel = new ViewModelProvider(this).get(VersionViewModel.class);
-        accountGroupViewModel = new ViewModelProvider(this).get(AccountGroupViewModel.class);
-
-        versionList = new ArrayList<>();
+//        goalViewModel = new ViewModelProvider(this).get(GoalViewModel.class);
+//        goalDetailViewModel = new ViewModelProvider(this).get(GoalDetailViewModel.class);
+//        versionViewModel = new ViewModelProvider(this).get(VersionViewModel.class);
+//        accountGroupViewModel = new ViewModelProvider(this).get(AccountGroupViewModel.class);
+//
+//        versionList = new ArrayList<>();
 
         //SIDEBAR MENU
         toolbar = findViewById(R.id.main_menu_toolbar);
@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(intent);
     }
 
+    //THIS FUNCTION NAVIGATES THROUGH NAV BAR
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){

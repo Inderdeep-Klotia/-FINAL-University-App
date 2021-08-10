@@ -40,12 +40,9 @@ public class VersionViewModel extends AndroidViewModel {
         repository.deleteVersion(version);
     }
 
-    public Version getVersion(){
-        Version version = (Version) allVersion.getValue();
-        return version;
     }
 
 
-}
+
 
 

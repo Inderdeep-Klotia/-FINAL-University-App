@@ -21,23 +21,29 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleRegistry;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.budgetapp.DataManager.Model.AccountGroup;
 import com.example.budgetapp.DataManager.Model.Goal;
 import com.example.budgetapp.DataManager.Model.GoalDetail;
 import com.example.budgetapp.DataManager.Model.Version;
 import com.example.budgetapp.R;
+import com.example.budgetapp.ViewModel.AccountGroupViewModel;
+import com.example.budgetapp.ViewModel.GoalDetailViewModel;
+import com.example.budgetapp.ViewModel.GoalViewModel;
+import com.example.budgetapp.ViewModel.VersionViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 
+import java.util.ArrayList;
 import java.util.IllegalFormatException;
+import java.util.List;
 
-
-import static com.example.budgetapp.Activities.MainActivity.accountGroupViewModel;
-import static com.example.budgetapp.Activities.MainActivity.goalDetailViewModel;
-import static com.example.budgetapp.Activities.MainActivity.goalViewModel;
-import static com.example.budgetapp.Activities.MainActivity.versionViewModel;
 
 public class CreateVersion extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -74,12 +80,11 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
     private Double balance = 0.0;
     private String TAG;
 
-//
-//    public static GoalViewModel goalViewModel;
-//    public static GoalDetailViewModel goalDetailViewModel;
-//    public static VersionViewModel versionViewModel;
-//    public static AccountGroupViewModel accountGroupViewModel;
-//    public static List<Version> versionList;
+    //DATABASE VIEW MODEL
+    GoalViewModel goalViewModel;
+    GoalDetailViewModel goalDetailViewModel;
+    VersionViewModel versionViewModel;
+    AccountGroupViewModel accountGroupViewModel;
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -88,13 +93,14 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_version);
 
+
         //DATABASE: VIEW MODELS
-//        goalViewModel = new ViewModelProvider(this).get(GoalViewModel.class);
-//        goalDetailViewModel = new ViewModelProvider(this).get(GoalDetailViewModel.class);
-//        versionViewModel = new ViewModelProvider(this).get(VersionViewModel.class);
-//        accountGroupViewModel = new ViewModelProvider(this).get(AccountGroupViewModel.class);
-//
-//        versionList = new ArrayList<>();
+        goalViewModel = new ViewModelProvider(this).get(GoalViewModel.class);
+        goalDetailViewModel = new ViewModelProvider(this).get(GoalDetailViewModel.class);
+        versionViewModel = new ViewModelProvider(this).get(VersionViewModel.class);
+        accountGroupViewModel = new ViewModelProvider(this).get(AccountGroupViewModel.class);
+
+        //versionList = new ArrayList<>();
 
         //SIDEBAR MENU
         toolbar = findViewById(R.id.create_version_toolbar);
@@ -350,6 +356,10 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Log.d(TAG, "SAVE BUTTON IS CLICKED");
+
+
                 //VersionViewModel
                 versionViewModel.insertVersion(new Version(versionName));
 
@@ -359,49 +369,10 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
                 //AccountGroupViewModel
                 accountGroupViewModel.insertAccountGroup(new AccountGroup(versionName));
 
-                openDialog();
-                //Create Dialog box
-//                Dialog dialog = new Dialog(CreateVersion.this);
-//                dialog.setContentView(R.layout.dialog_create_version_save);
-//                dialog.create();
-//                dialog.findViewById(R.id.dialog_create_version_button).setOnClickListener(new View.OnClickListener() {
-//
-//                    @Override
-//                    public void onClick(View view) {
-//                        GoalDetail essentials = new GoalDetail(goalViewModel.getGoal().getId(),
-//                                accountGroupViewModel.getAccountGroup().getId(),
-//                                essentialsVal,
-//                                versionViewModel.getVersion().getId());
-//
-//                        goalDetailViewModel.insertGoalDetail(essentials);
-//
-//                        //                //GoalViewModel display
-//                        goalDetailViewModel.getAllGoalDetail().observe(CreateVersion.this, goals -> {
-//                            Log.d(TAG, "GoalViewModel Observed is WOKRING ");
-//
-//                            int goals1 = goals.indexOf(0);
-//                            Log.d(TAG, "goals1: " + goals1);
-//                            try {
-//
-//                                for (GoalDetail v : goals) {
-//
-//                                    Log.d(TAG, "goal id= " + v.getId());
-//                                    Log.d(TAG, "goal name= " + v.getGoalID());
-//                                    Log.d(TAG, "goal amount= " + v.getAmount());
-//                                }
-//                            } catch (NullPointerException e) {
-//                                e.getMessage();
-//                            }
-//
-//
-//
-//                            Log.d(TAG, "GoalViewModel Observed AFTER PRINTING ");
-//                        });
-//                   }
-//                });
-//
-//
-//
+                Log.d(TAG, "VERSION, GOAL, ACC GROUP MADE, BEFORE OPEN DIALOG");
+
+                observePls();
+
            }
 
 
@@ -409,10 +380,37 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
 
     }
 
-    public void openDialog(){
-        CreateVersionDialog dialog = new CreateVersionDialog();
-        dialog.show(getSupportFragmentManager(), "");
+    private void observePls() {
+        Log.d(TAG, "observerPls WORKS ");
+        versionViewModel.getAllVersion().observe( this, new Observer<List<Version>>() {
+                @Override
+                public void onChanged(List<Version> versions) {
+                    for(Version v : versions) {
+                        Log.d(TAG, "Version name = " + v.getVersionName());
+                        Log.d(TAG, "Version Id = " + v.getId());
+                    }
+                }
+            });
+        goalViewModel.getAllGoal().observe( this, new Observer<List<Goal>>() {
+            @Override
+            public void onChanged(List<Goal> goals) {
+                for(Goal v : goals) {
+                    Log.d(TAG, "Goal name = " + v.getGoalName());
+                    Log.d(TAG, "Goal Id = " + v.getId());
+                }
+            }
+        });
+        accountGroupViewModel.getAllAccountGroup().observe( this, new Observer<List<AccountGroup>>() {
+            @Override
+            public void onChanged(List<AccountGroup> accGroup) {
+                for(AccountGroup v : accGroup) {
+                    Log.d(TAG, "AccountGroup name = " + v.getAccountGroupName());
+                    Log.d(TAG, "AccountGroup Id = " + v.getId());
+                }
+            }
+        });
     }
+
     public void setActionBar(String heading){
         ActionBar actionBar = getSupportActionBar();
         //actionBar.setHomeButtonEnabled(true);
