@@ -12,14 +12,16 @@ public class AccountType {
     @PrimaryKey (autoGenerate = true)
     int id;
     String accountTypeName;
-    int accountGroupID;
+    String accountGroupName;
+    String accountClassName;
     char creditSign; //we'll hard code it
     int creditSignMultiplier;
 
 
-    public AccountType(String accountTypeName, int accountGroupID, char creditSign, int creditSignMultiplier) {
+    public AccountType(String accountTypeName, String accountGroupName, String accountClassName, char creditSign, int creditSignMultiplier) {
         this.accountTypeName = accountTypeName;
-        this.accountGroupID = accountGroupID;
+        this.accountGroupName = accountGroupName;
+        this.accountClassName = accountClassName;
         this.creditSign = creditSign;
         this.creditSignMultiplier = creditSignMultiplier;
     }
@@ -36,16 +38,8 @@ public class AccountType {
         return accountTypeName;
     }
 
-    public void setAccountTypeName(int accountGroupID) {
+    public void setAccountTypeName(String accountTypeName) {
         this.accountTypeName = accountTypeName;
-    }
-
-    public int getAccountGroupID() {
-        return accountGroupID;
-    }
-
-    public void setAccountGroupID(int accountGroupID) {
-        this.accountGroupID = accountGroupID;
     }
 
     public char getCreditSign() {
@@ -62,6 +56,22 @@ public class AccountType {
 
     public void setCreditSignMultiplier(int creditSignMultiplier) {
         this.creditSignMultiplier = creditSignMultiplier;
+    }
+
+    public String getAccountGroupName() {
+        return accountGroupName;
+    }
+
+    public void setAccountGroupName(String accountGroupName) {
+        this.accountGroupName = accountGroupName;
+    }
+
+    public String getAccountClassName() {
+        return accountClassName;
+    }
+
+    public void setAccountClassName(String accountClassName) {
+        this.accountClassName = accountClassName;
     }
 }
 

@@ -74,9 +74,9 @@ public abstract class AppDatabase extends RoomDatabase{
         public PopulateDBAsync(AppDatabase adb){
 
             this.agDao = adb.accountGroupDao();
-            accountGroups[0].setAccountGroupName("Spending");
-            accountGroups[1].setAccountGroupName("S");
-            accountGroups[2].setAccountGroupName("Spending");
+            accountGroups[0].setAccountGroupName("Essential");
+            accountGroups[1].setAccountGroupName("NonEssential");
+            accountGroups[2].setAccountGroupName("Savings");
             this.agDao.insertPreloadAccountGroup(accountGroups);
         }
 

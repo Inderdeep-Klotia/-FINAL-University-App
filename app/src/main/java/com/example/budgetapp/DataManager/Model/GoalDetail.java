@@ -8,16 +8,16 @@ import androidx.room.PrimaryKey;
 public class GoalDetail {
     @PrimaryKey (autoGenerate = true)
     int id;
-    int goalID;
-    int accountGroupID;
-    int versionID;
+    String goalName;
+    String accountGroupName;
+    String versionName;
     double amount;
 
-    public GoalDetail(int goalID, int accountGroupID, double amount, int versionID) {
-        this.goalID = goalID;
-        this.accountGroupID = accountGroupID;
+    public GoalDetail(String goalName, String accountGroupName, double amount, String versionName) {
+        this.goalName = goalName;
+        this.accountGroupName = accountGroupName;
         this.amount = amount;
-        this.versionID = versionID;
+        this.versionName = versionName;
     }
 
     public int getId() {
@@ -28,37 +28,36 @@ public class GoalDetail {
         this.id = id;
     }
 
-    public int getGoalID() {
-        return goalID;
-    }
-
-    public void setGoalID(int goalID) {
-        this.goalID = goalID;
-    }
-
-    public int getAccountGroupID() {
-        return accountGroupID;
-    }
-
-    public void setAccountGroupID(int accountGroupID) {
-        this.accountGroupID = accountGroupID;
-    }
-
     public double getAmount() {
         return amount;
     }
 
-    public int getVersionID() {
-        return versionID;
-    }
-
-    public void setVersionID(int versionID) {
-        this.versionID = versionID;
-    }
-
-
     public void setAmount(double amount) {
         this.amount = amount;
+    }
+
+    public String getGoalName() {
+        return goalName;
+    }
+
+    public void setGoalName(String goalName) {
+        this.goalName = goalName;
+    }
+
+    public String getAccountGroupName() {
+        return accountGroupName;
+    }
+
+    public void setAccountGroupName(String accountGroupName) {
+        this.accountGroupName = accountGroupName;
+    }
+
+    public String getVersionName() {
+        return versionName;
+    }
+
+    public void setVersionName(String versionName) {
+        this.versionName = versionName;
     }
 }
 

@@ -8,19 +8,19 @@ import androidx.room.PrimaryKey;
 public class Fact {
     @PrimaryKey (autoGenerate = true)
     int id;
-    int versionID;
-    int accountGroupID;
-    int accountTypeID;
+    String versionName;
+    String accountGroupName;
+    String accountTypeName;
     double p1;  //semesters
     double p2;  //semesters
     double p3;  //semesters
     double p4;  //semesters
     double totalSemester; //semesters
 
-    public Fact(int versionID, int accountGroupID, int accountTypeID, double p1, double p2, double p3, double p4, double totalSemester) {
-        this.versionID = versionID;
-        this.accountGroupID = accountGroupID;
-        this.accountTypeID = accountTypeID;
+    public Fact(String versionName, String accountGroupName, String accountTypeName, double p1, double p2, double p3, double p4, double totalSemester) {
+        this.versionName = versionName;
+        this.accountGroupName = accountGroupName;
+        this.accountTypeName = accountTypeName;
         this.p1 = p1;
         this.p2 = p2;
         this.p3 = p3;
@@ -34,30 +34,6 @@ public class Fact {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getVersionID() {
-        return versionID;
-    }
-
-    public void setVersionID(int versionID) {
-        this.versionID = versionID;
-    }
-
-    public int getAccountGroupID() {
-        return accountGroupID;
-    }
-
-    public void setAccountGroupID(int accountGroupID) {
-        this.accountGroupID = accountGroupID;
-    }
-
-    public int getAccountTypeID() {
-        return accountTypeID;
-    }
-
-    public void setAccountTypeID(int accountTypeID) {
-        this.accountTypeID = accountTypeID;
     }
 
     public double getP1() {
@@ -98,6 +74,30 @@ public class Fact {
 
     public void setTotalSemester(double ts) {
         this.totalSemester = ts;
+    }
+
+    public String getVersionName() {
+        return versionName;
+    }
+
+    public void setVersionName(String versionName) {
+        this.versionName = versionName;
+    }
+
+    public String getAccountGroupName() {
+        return accountGroupName;
+    }
+
+    public void setAccountGroupName(String accountGroupName) {
+        this.accountGroupName = accountGroupName;
+    }
+
+    public String getAccountTypeName() {
+        return accountTypeName;
+    }
+
+    public void setAccountTypeName(String accountTypeName) {
+        this.accountTypeName = accountTypeName;
     }
 }
 

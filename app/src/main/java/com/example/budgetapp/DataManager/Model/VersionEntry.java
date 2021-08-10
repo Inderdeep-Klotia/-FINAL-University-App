@@ -8,17 +8,17 @@ import androidx.room.PrimaryKey;
 public class VersionEntry {
     @PrimaryKey (autoGenerate = true)
     int id;
-    int versionID;
+    String versionName;
     String entryPeriod;
-    int accountTypeID;
+    String accountTypeName;
     String entryName;
     String entryDesc;
     double entryAmount;
 
-    public VersionEntry(int versionID, String entryPeriod, int accountTypeID, String entryName, String entryDesc, double entryAmount) {
-        this.versionID = versionID;
+    public VersionEntry(String versionName, String entryPeriod, String accountTypeName, String entryName, String entryDesc, double entryAmount) {
+        this.versionName = versionName;
         this.entryPeriod = entryPeriod;
-        this.accountTypeID = accountTypeID;
+        this.accountTypeName = accountTypeName;
         this.entryName = entryName;
         this.entryDesc = entryDesc;
         this.entryAmount = entryAmount;
@@ -32,28 +32,12 @@ public class VersionEntry {
         this.id = id;
     }
 
-    public int getVersionID() {
-        return versionID;
-    }
-
-    public void setVersionID(int versionID) {
-        this.versionID = versionID;
-    }
-
     public String getEntryPeriod() {
         return entryPeriod;
     }
 
     public void setEntryPeriod(String entryPeriod) {
         this.entryPeriod = entryPeriod;
-    }
-
-    public int getAccountTypeID() {
-        return accountTypeID;
-    }
-
-    public void setAccountTypeID(int accountTypeID) {
-        this.accountTypeID = accountTypeID;
     }
 
     public String getEntryName() {
@@ -78,6 +62,22 @@ public class VersionEntry {
 
     public void setEntryAmount(double entryAmount) {
         this.entryAmount = entryAmount;
+    }
+
+    public String getVersionName() {
+        return versionName;
+    }
+
+    public void setVersionName(String versionName) {
+        this.versionName = versionName;
+    }
+
+    public String getAccountTypeName() {
+        return accountTypeName;
+    }
+
+    public void setAccountTypeName(String accountTypeName) {
+        this.accountTypeName = accountTypeName;
     }
 }
 
