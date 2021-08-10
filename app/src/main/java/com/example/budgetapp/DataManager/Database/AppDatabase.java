@@ -77,7 +77,9 @@ public abstract class AppDatabase extends RoomDatabase{
             accountGroups[0].setAccountGroupName("Essential");
             accountGroups[1].setAccountGroupName("NonEssential");
             accountGroups[2].setAccountGroupName("Savings");
-            this.agDao.insertPreloadAccountGroup(accountGroups);
+            for(AccountGroup ag : accountGroups){
+                this.agDao.insertAccountGroup(ag);
+            }
         }
 
         @Override
