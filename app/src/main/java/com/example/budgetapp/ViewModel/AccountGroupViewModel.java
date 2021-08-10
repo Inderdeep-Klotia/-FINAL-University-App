@@ -40,11 +40,13 @@ public class AccountGroupViewModel extends AndroidViewModel {
         repository.deleteAccountGroup(accountGroup);
     }
 
-    public AccountGroup getAccountGroup(){
+/*    public AccountGroup getAccountGroup(){
         AccountGroup accGroup = (AccountGroup) allAccountGroup.getValue();
         return accGroup;
+    }*/
+    public AccountGroup getAccountGroup(String accountGroupName) {
+        return repository.getAccountGroup(accountGroupName);
     }
-
 
 }
 

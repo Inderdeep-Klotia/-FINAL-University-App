@@ -38,6 +38,9 @@ public class AccountTypeViewModel extends AndroidViewModel {
         repository.deleteAccountType(accountType);
     }
 
+    public List<AccountType> getAccountType(String accountTypeName){
+        return repository.getAccountType(accountTypeName);
+    }
 
 }
 

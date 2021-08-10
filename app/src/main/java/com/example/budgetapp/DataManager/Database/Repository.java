@@ -41,6 +41,7 @@ public class Repository {
     private LiveData<List<Version>> allVersion;
     private LiveData<List<VersionEntry>> allVersionEntry;
 
+
     public Repository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         accountGroupDao = db.accountGroupDao();
@@ -61,6 +62,10 @@ public class Repository {
 
     public LiveData<List<AccountGroup>> getAllAccountGroup() {
         return allAccountGroup;
+    }
+
+    public AccountGroup getAccountGroup(String accountGroupName) {
+        return accountGroupDao.getAccountGroup(accountGroupName);
     }
 
     public void insertAccountGroup(AccountGroup accountGroup) {
@@ -120,6 +125,10 @@ public class Repository {
     // Account Type
     public LiveData<List<AccountType>> getAllAccountType() {
         return allAccountType;
+    }
+
+    public List<AccountType> getAccountType(String accountTypeName){
+        return accountTypeDao.getAccountType(accountTypeName);
     }
 
     public void insertAccountType(AccountType accountType) {

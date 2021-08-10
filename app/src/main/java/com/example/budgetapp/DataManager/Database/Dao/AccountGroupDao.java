@@ -7,7 +7,6 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.budgetapp.DataManager.Model.AccountGroup;
-import com.example.budgetapp.DataManager.Model.AccountGroup;
 
 import java.util.List;
 
@@ -29,5 +28,7 @@ public interface AccountGroupDao {
     @Query("Select * From AccountGroup Order By id DESC")
     LiveData<List<AccountGroup>> getAllAccountGroup();
 
+    @Query("Select * From AccountGroup WHERE accountGroupName = :accountGroupName")
+    AccountGroup getAccountGroup(String accountGroupName);
 
 }

@@ -26,6 +26,7 @@ public interface AccountTypeDao {
     @Query("Select * From AccountType Order By id DESC")
     LiveData<List<AccountType>> getAllAccountType();
 
-
+    @Query("Select * From AccountType Where accountTypeName = :accountTypeName")
+    List<AccountType> getAccountType(String accountTypeName);
 }
 
