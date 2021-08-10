@@ -7,7 +7,6 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.budgetapp.DataManager.Database.Repository;
-import com.example.budgetapp.DataManager.Model.AccountGroup;
 import com.example.budgetapp.DataManager.Model.Version;
 
 

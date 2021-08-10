@@ -17,6 +17,9 @@ public interface AccountGroupDao {
     @Insert
     void insertAccountGroup(AccountGroup accountGroup);
 
+    @Insert
+    void insertPreloadAccountGroup(AccountGroup[] accountGroups);
+
     @Update
     void updateAccountGroup(AccountGroup accountGroup);
 

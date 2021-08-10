@@ -58,7 +58,33 @@ public abstract class AppDatabase extends RoomDatabase{
             super.onOpen(db);
             new PopularDBAsync(appDatabase).execute();
         }
+        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+            super.onCreate(db);
+            new PopularDBAsync(appDatabase).execute();
+            new PopulateDBAsync(appDatabase).execute();
+        }
     };
+
+    private static class PopulateDBAsync extends AsyncTask<Void,Void,Void>{
+        private final AccountGroupDao agDao;
+        Version[] versions = new Version[3];
+        AccountGroup[] accountGroups = new AccountGroup[3];
+
+
+        public PopulateDBAsync(AppDatabase adb){
+
+            this.agDao = adb.accountGroupDao();
+            accountGroups[0].setAccountGroupName("Spending");
+            accountGroups[1].setAccountGroupName("S");
+            accountGroups[2].setAccountGroupName("Spending");
+            this.agDao.insertPreloadAccountGroup(accountGroups);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
+    }
 
     private static class PopularDBAsync extends AsyncTask<Void,Void,Void>{
         private final AccountGroupDao agDao;
