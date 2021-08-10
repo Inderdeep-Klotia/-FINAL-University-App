@@ -51,6 +51,8 @@ public class Repository {
         allFact = factDao.getAllFact();
         goalDao = db.goalDao();
         allGoal = goalDao.getAllGoal();
+        goalDetailDao = db.goalDetailDao();
+        allGoalDetail = goalDetailDao.getAllGoalDetail();
         versionDao = db.versionDao();
         allVersion = versionDao.getAllVersion();
         versionEntryDao = db.versionEntryDao();
