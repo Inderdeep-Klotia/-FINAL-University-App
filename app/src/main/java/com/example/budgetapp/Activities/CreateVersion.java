@@ -33,6 +33,7 @@ import com.example.budgetapp.DataManager.Model.AccountGroup;
 import com.example.budgetapp.DataManager.Model.Goal;
 import com.example.budgetapp.DataManager.Model.GoalDetail;
 import com.example.budgetapp.DataManager.Model.Version;
+import com.example.budgetapp.DataManager.Model.VersionEntry;
 import com.example.budgetapp.R;
 import com.example.budgetapp.ViewModel.AccountGroupViewModel;
 import com.example.budgetapp.ViewModel.GoalDetailViewModel;
@@ -66,6 +67,11 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
     private SeekBar essentialsBar;
     private SeekBar nonessentialsBar;
     private SeekBar savingsBar;
+
+    private TextView essentialsPercent;
+    private TextView nonessentialsPercent;
+    private TextView savingsPercent;
+
 
     private Button saveButton;
 
@@ -145,11 +151,18 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
         nonessentialsEntry = (TextView) findViewById(R.id.create_version_nonessentials_amt);
         savingsEntry = (TextView) findViewById(R.id.create_version_savings_amt);
 
+
+        essentialsPercent = (TextView) findViewById(R.id.create_version_essential_percentage);
+        nonessentialsPercent = (TextView) findViewById(R.id.create_version_nonessential_percentage);
+        savingsPercent = (TextView) findViewById(R.id.create_version_savings_percentage);
+
+
         essentialsBar = (SeekBar) findViewById(R.id.create_version_seekBar_essentials);
         nonessentialsBar = (SeekBar) findViewById(R.id.create_version_seekBar_nonessentials);
         savingsBar = (SeekBar) findViewById(R.id.create_version_seekBar_savings);
 
         saveButton = (Button) findViewById(R.id.create_version_save_changes);
+
 
 
         //SETTING UP LISTENERS
@@ -253,6 +266,12 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
                 essentialsEntry.setText("$");
                 essentialsEntry.append(val.toString());
                 essentialsVal = val;
+
+
+                Integer essPer = seekBar.getProgress();
+                essentialsPercent.setText(essPer.toString());
+                essentialsPercent.append("%");
+
                 Log.d(TAG, "essentialsVal: " + essentialsVal);
                 //Toast.makeText(CreateVersion.this, essentialsVal.toString(), Toast.LENGTH_SHORT).show();
 
@@ -295,6 +314,11 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
                 nonessentialsEntry.append(val.toString());
                 nonessentialsVal = val;
                 Log.d(TAG, "nonessentialsVal: " + nonessentialsVal);
+
+                Integer nonessPer = seekBar.getProgress();
+                nonessentialsPercent.setText(nonessPer.toString());
+                nonessentialsPercent.append("%");
+
                 //Toast.makeText(CreateVersion.this, nonessentialsVal.toString(), Toast.LENGTH_SHORT).show();
 
                 balance = estimateIncome - essentialsVal - nonessentialsVal - savingsVal;
@@ -332,6 +356,12 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
                 savingsEntry.setText("$");
                 savingsEntry.append(val.toString());
                 savingsVal = val;
+
+                Integer savPer = seekBar.getProgress();
+                savingsPercent.setText(savPer.toString());
+                savingsPercent.append("%");
+
+
                 Log.d(TAG, "savingsVal: " + savingsVal);
 
                 balance = estimateIncome - essentialsVal - nonessentialsVal - savingsVal;
@@ -373,7 +403,7 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
                 Log.d(TAG, "SAVE BUTTON IS CLICKED");
 
                 Goal goal_temp = new Goal(versionName);
-                AccountGroup acc_grp_temp = new AccountGroup(versionName);
+                //AccountGroup acc_grp_temp = new AccountGroup(versionName);
                 Version version_temp = new Version(versionName);
 
                 //VersionViewModel
@@ -383,31 +413,63 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
                 goalViewModel.insertGoal(goal_temp);
 
                 //AccountGroupViewModel
-                accountGroupViewModel.insertAccountGroup(acc_grp_temp);
+                //accountGroupViewModel.insertAccountGroup();
 
                 Log.d(TAG, "VERSION, GOAL, ACC GROUP MADE");
 
 
                 Log.d(TAG, "AFTER OBSERVE PLS");
 
-                GoalDetail essential = new GoalDetail(goal_temp.getGoalName(), acc_grp_temp.getAccountGroupName(),
+
+                GoalDetail essential = new GoalDetail(goal_temp.getGoalName(), "Essential",
                         essentialsVal, version_temp.getVersionName());
 
+                GoalDetail nonessential = new GoalDetail(goal_temp.getGoalName(), "NonEssential",
+                        nonessentialsVal, version_temp.getVersionName());
+
+                GoalDetail savings = new GoalDetail(goal_temp.getGoalName(), "Savings",
+                        savingsVal, version_temp.getVersionName());
+
+                GoalDetail income = new GoalDetail(goal_temp.getGoalName(), "Income",
+                        estimateIncome, version_temp.getVersionName());
+
+                GoalDetail expenses = new GoalDetail(goal_temp.getGoalName(), "Expenses",
+                        estimateExpenses, version_temp.getVersionName());
+
                 Log.d(TAG, "Goal name " + goal_temp.getGoalName());
-                Log.d(TAG, "Account Group Name  " + acc_grp_temp.getAccountGroupName());
+               // Log.d(TAG, "Account Group Name  " + acc_grp_temp.getAccountGroupName());
                 Log.d(TAG, "Essential amount " + essential.getAmount());
                 Log.d(TAG, "Version Name " + version_temp.getVersionName());
 
                 goalDetailViewModel.insertGoalDetail(essential);
+                goalDetailViewModel.insertGoalDetail(nonessential);
+                goalDetailViewModel.insertGoalDetail(savings);
+                goalDetailViewModel.insertGoalDetail(income);
+                goalDetailViewModel.insertGoalDetail(expenses);
 
                 Log.d(TAG, "AFTER GOAL DETAIL INSERTION ");
 
+                observeAC();
+
                 observeGD();
+
+                openDialog();
             }
 
 
         });
 
+    }
+
+    private void observeAC() {
+        accountGroupViewModel.getAllAccountGroup().observe(this, new Observer<List<AccountGroup>>() {
+            @Override
+            public void onChanged(List<AccountGroup> accountGroups) {
+                for(AccountGroup ac : accountGroups){
+                    Log.d(TAG, "account Group name = " + ac.getAccountGroupName());
+                }
+            }
+        });
     }
     //comment
     private void observeGD() {
@@ -422,66 +484,15 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
         });
     }
 
-    //Adding observers to versionViewMode, GoalViewModel and Account Group View
-    //Checking to see if the database is updated
-//    private void observePls() {
-//        Log.d(TAG, "observerPls WORKS ");
-//        versionViewModel.getAllVersion().observe( this, new Observer<List<Version>>() {
-//            @Override
-//            public void onChanged(List<Version> versions) {
-//                Log.d(TAG, "inside versions onchanged before FOR ");
-//                for(Version v : versions) {
-////                        if(v.getVersionName().equals(versionName))
-////                        {
-////                            Log.d(TAG, "INSIDE IF WORKS");
-//                    version_id.add(v.getId());
-////                        }
-//                    Log.d(TAG, "Version name = " + v.getVersionName());
-//                    Log.d(TAG, "Version Id = " + v.getId());
-//                    // Log.d(TAG, "ASSINGED Version Id = " + version_id.get());
-//                }
-//                Log.d(TAG, "inside versions onchanged After FOR ");
-//            }
-//        });
-//        goalViewModel.getAllGoal().observe( this, new Observer<List<Goal>>() {
-//            @Override
-//            public void onChanged(List<Goal> goals) {
-//                Log.d(TAG, "inside goals onchanged before FOR ");
-//                for(Goal v : goals) {
-////                    if(v.getGoalName().equals(versionName))
-////                    {
-//                    goal_id.add(v.getId());
-////                    }
-//                    Log.d(TAG, "Goal name = " + v.getGoalName());
-//                    Log.d(TAG, "Goal Id = " + v.getId());
-//                    //   Log.d(TAG, "ASSINGED Goal Id = " + goal_id.get(1));
-//                }
-//                Log.d(TAG, "inside goals onchanged after FOR ");
-//            }
-//        });
-//        accountGroupViewModel.getAllAccountGroup().observe( this, new Observer<List<AccountGroup>>() {
-//            @Override
-//            public void onChanged(List<AccountGroup> accGroup) {
-//                Log.d(TAG, "inside acGroup onchanged before FOR ");
-//                for(AccountGroup v : accGroup) {
-////                    if(counter_acc == 1) {
-////                        counter_acc++;
-////                        continue;
-////                    }
-////                    if(v.getAccountGroupName().equals(versionName))
-////                    {
-//                    acc_grp_id.add(v.getId());
-////                    }
-//                    Log.d(TAG, "AccountGroup name = " + v.getAccountGroupName());
-//                    Log.d(TAG, "AccountGroup Id = " + v.getId());
-//                    //   Log.d(TAG, "ASSINGED AccountGroup = " + acc_grp_id.get(1));
-//                }
-//                Log.d(TAG, "inside acGroup onchanged after FOR ");
-//            }
-//        });
-//
-//    }
 
+
+    //DIALOG BOX CODE
+    public void openDialog(){
+        CreateVersionDialog createVersionDialog = new CreateVersionDialog();
+        createVersionDialog.show(getSupportFragmentManager(), "saved dialog box");
+    }
+
+    //TOOL BAR CODE
     public void setActionBar(String heading){
         ActionBar actionBar = getSupportActionBar();
         //actionBar.setHomeButtonEnabled(true);

@@ -1,231 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-android:layout_width="fill_parent"
-android:background="#11000000"
-android:layout_height="fill_parent">
-
-<com.google.android.material.appbar.AppBarLayout
-    android:id="@+id/app_bar"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:fitsSystemWindows="true">
-    <androidx.appcompat.widget.Toolbar
-        android:id="@id/toolbar"
-        android:layout_width="fill_parent"
-        android:layout_height="?actionBarSize"
-        app:layout_collapseMode="pin"
-        android:background="#6cb8e3"
-       >
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginTop="12dp"
-            android:layout_marginRight="12dp"
-            android:orientation="horizontal">
-            <ImageView
-                android:id="@+id/ivBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:src="@drawable/outline_menu_white_48"
-                />
-            <TextView
-                android:id="@+id/tvLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Add Transactions"
-                android:textColor="@color/white"
-                android:textSize="18dp" />
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#11000000"
+    android:layout_height="fill_parent">
+    tools:context=".Activities.AddTransaction">
 
-        </RelativeLayout>
-    </androidx.appcompat.widget.Toolbar>
-
-    <!--        <com.google.android.material.appbar.CollapsingToolbarLayout-->
-    <!--            android:id="@+id/toolbar_layout"-->
-    <!--            android:layout_width="fill_parent"-->
-    <!--            android:layout_height="80dp"-->
-    <!--            android:background="#6cb8e3"-->
-    <!--            android:fitsSystemWindows="true"-->
-    <!--            app:contentScrim="@color/colorPrimaryDark"-->
-    <!--            app:layout_scrollFlags="exitUntilCollapsed|scroll"-->
-    <!--            app:toolbarId="@id/toolbar">-->
-
-    <!--            <androidx.appcompat.widget.Toolbar-->
-    <!--                android:id="@id/toolbar"-->
-    <!--                android:layout_width="fill_parent"-->
-    <!--                android:layout_height="?actionBarSize"-->
-    <!--                app:layout_collapseMode="pin"-->
-    <!--                app:popupTheme="@style/AppTheme.PopupOverlay">-->
-    <!--                <RelativeLayout-->
-    <!--                    android:layout_width="fill_parent"-->
-    <!--                    android:layout_height="fill_parent"-->
-    <!--                    android:layout_marginTop="12dp"-->
-    <!--                    android:layout_marginRight="12dp"-->
-    <!--                    android:orientation="horizontal">-->
-    <!--                    <ImageView-->
-    <!--                        android:id="@+id/ivBack"-->
-    <!--                        android:layout_width="wrap_content"-->
-    <!--                        android:layout_height="wrap_content"-->
-    <!--                        android:layout_centerVertical="true"-->
-    <!--                        android:src="@drawable/ic_baseline_keyboard_arrow_left_24"-->
-    <!--                        />-->
-    <!--                    <TextView-->
-    <!--                        android:id="@+id/tvLocation"-->
-    <!--                        android:layout_width="wrap_content"-->
-    <!--                        android:layout_height="wrap_content"-->
-    <!--                        android:layout_centerInParent="true"-->
-    <!--                        android:text="Add Transactions"-->
-    <!--                        android:textColor="@color/white"-->
-    <!--                        android:textSize="18dp" />-->
-
-    <!--                </RelativeLayout>-->
-    <!--            </androidx.appcompat.widget.Toolbar>-->
-    <!--        </com.google.android.material.appbar.CollapsingToolbarLayout>-->
-    <!--    -->
-</com.google.android.material.appbar.AppBarLayout>
-<RelativeLayout
-    android:layout_width="fill_parent"
-    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-    android:layout_height="match_parent">
-    <LinearLayout
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/add_transaction_drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="60dp"
-            android:layout_marginTop="70dp"
-            android:orientation="vertical">
+        android:layout_height="match_parent"
+        tools:context=".Activities.AddTransaction">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/add_transaction_coordinator_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/add_transaction_instruction_type"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/roboto_slab_thin"
                 android:text="Transaction Type"
-                android:textSize="18dp"
-                android:layout_marginLeft="5dp"
-                />
+                android:textAlignment="center"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_transaction_appBarLayout" />
+
             <EditText
+                android:id="@+id/add_transaction_type_entry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="60dp"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:hint="Input text for  single line field"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/roboto_slab_thin"
+                android:text="Input text for single line field"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_transaction_instruction_type" />
 
-                />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="60dp"
-            android:orientation="vertical">
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/add_transaction_instruction_date"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/roboto_slab_thin"
                 android:text="Transaction Date"
-                android:textSize="18dp"
-                android:layout_marginLeft="5dp"
-                />
+                android:textAlignment="center"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_transaction_type_entry" />
+
             <EditText
+                android:id="@+id/add_transaction_date_entry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="60dp"
-                android:singleLine="true"
-                android:hint="Input text for  single line field"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/roboto_slab_thin"
+                android:text="Input text for single line field"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_transaction_instruction_date" />
 
-                />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="60dp"
-            android:orientation="vertical">
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/add_transaction_instruction_name"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/roboto_slab_thin"
                 android:text="Transaction Name"
-                android:textSize="18dp"
-                android:layout_marginLeft="5dp"
-                />
+                android:textAlignment="center"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_transaction_date_entry" />
+
             <EditText
+                android:id="@+id/add_transaction_name_entry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="60dp"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:hint="Input text for  single line field"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/roboto_slab_thin"
+                android:text="Input text for single line field"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_transaction_instruction_name" />
 
-                />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="60dp"
-            android:orientation="vertical">
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/add_transaction_instruction_description"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/roboto_slab_thin"
                 android:text="Transaction Description"
-                android:textSize="18dp"
-                android:layout_marginLeft="5dp"
-                />
+                android:textAlignment="center"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_transaction_name_entry" />
+
             <EditText
+                android:id="@+id/add_transaction_description_entry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="60dp"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:hint="Input text for  single line field"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/roboto_slab_thin"
+                android:text="Input text for single line field"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_transaction_instruction_description" />
 
-                />
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="60dp"
-            android:orientation="vertical">
             <TextView
+                android:id="@+id/add_transaction_instruction_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/roboto_slab_thin"
+                android:text="Transaction Amount"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_transaction_description_entry" />
+
+            <EditText
+                android:id="@+id/add_transaction_amount_entry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/roboto_slab_thin"
+                android:text="Input text for single line field"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_transaction_instruction_amount" />
+
+            <Button
+                android:id="@+id/add_transaction_save_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Transaction Amount"
-                android:textSize="18dp"
-                android:layout_marginLeft="5dp"
-                />
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="60dp"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:hint="Input text for  single line field"
+                android:fontFamily="@font/roboto_slab_thin"
+                android:text="@string/save_changes"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_transaction_amount_entry" />
 
-                />
 
-        </LinearLayout>
-    </LinearLayout>
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:id="@+id/plus_icon"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:backgroundTint="#6cb8e3"-->
-<!--        android:tint="@android:color/white"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_alignParentRight="true"-->
-<!--        android:layout_marginBottom="70dp"-->
-<!--        android:layout_marginRight="30dp"-->
-<!--        android:src="@drawable/outline_add_white_48"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        />-->
+            <!--        Beginning of the Nav Bar-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/add_transaction_appBarLayout"
+                android:layout_width="0dp"
+                android:layout_height="90dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-</RelativeLayout>
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/add_transaction_toolbar"
+                    android:layout_width="416dp"
+                    android:layout_height="90dp"
+                    android:background="#041E42"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/add_transaction_textView"
+                    android:layout_width="298dp"
+                    android:layout_height="81dp"
+                    android:background="#041E42"
+                    android:fontFamily="@font/roboto_slab_thin"
+                    android:text="Add Transaction"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="37sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.495"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.555" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--        END OF NAV BAR-->
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/add_transaction_nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:menu="@menu/nav_menu"
+            app:headerLayout="@layout/nav_header_layout"/>
+
+    </androidx.drawerlayout.widget.DrawerLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

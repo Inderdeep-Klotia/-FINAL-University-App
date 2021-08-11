@@ -24,7 +24,9 @@ import com.example.budgetapp.DataManager.Model.GoalDetail;
 import com.example.budgetapp.DataManager.Model.Version;
 import com.example.budgetapp.DataManager.Model.VersionEntry;
 
-@Database(entities={AccountGroup.class, AccountType.class, Fact.class, Goal.class, GoalDetail.class, Version.class, VersionEntry.class}, version=3, exportSchema = false)
+import java.util.concurrent.Executors;
+
+@Database(entities={AccountGroup.class, AccountType.class, Fact.class, Goal.class, GoalDetail.class, Version.class, VersionEntry.class}, version=4, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase{
     public abstract AccountGroupDao accountGroupDao();
     public abstract AccountTypeDao accountTypeDao();
@@ -67,17 +69,26 @@ public abstract class AppDatabase extends RoomDatabase{
 
     private static class PopulateDBAsync extends AsyncTask<Void,Void,Void>{
         private final AccountGroupDao agDao;
-        Version[] versions = new Version[3];
-        AccountGroup[] accountGroups = new AccountGroup[3];
-
-
         public PopulateDBAsync(AppDatabase adb){
 
             this.agDao = adb.accountGroupDao();
-            accountGroups[0].setAccountGroupName("Essential");
-            accountGroups[1].setAccountGroupName("NonEssential");
-            accountGroups[2].setAccountGroupName("Savings");
-            this.agDao.insertPreloadAccountGroup(accountGroups);
+            AccountGroup[] accountGroups = new AccountGroup[]{
+                    new AccountGroup("Essential"),
+                    new AccountGroup("NonEssential"),
+                    new AccountGroup("Savings"),
+                    new AccountGroup("Balance"),
+                    new AccountGroup("Income"),
+                    new AccountGroup("Expenses")
+            };
+            Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
+                @Override
+                public void run() {
+                    for(AccountGroup ag : accountGroups) {
+                        adb.accountGroupDao().insertAccountGroup(ag);
+                    }
+                }
+            });
+
         }
 
         @Override
@@ -85,6 +96,7 @@ public abstract class AppDatabase extends RoomDatabase{
             return null;
         }
     }
+
 
     private static class PopularDBAsync extends AsyncTask<Void,Void,Void>{
         private final AccountGroupDao agDao;

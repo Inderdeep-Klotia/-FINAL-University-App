@@ -37,6 +37,12 @@
     <string name="change_goals">Change Goals</string>
     <string name="strategies">Strategies</string>
 
+    <string name="essential">Essential</string>
+    <string name="nonessential">NonEssential</string>
+    <string name="saving">Savings</string>
+    <string name="income">Income</string>
+    <string name="expense">Expenses</string>
+
     <string name="instructions">
         Skip to go to Dashboard
 

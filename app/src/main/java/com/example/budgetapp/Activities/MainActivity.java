@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
 
+
     String[] financeTypes = {"Income", "Expenses"};
     int[] financeValues = {300, 500};
 
