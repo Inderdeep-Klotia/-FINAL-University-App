@@ -1,5 +1,6 @@
 package com.example.budgetapp.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.budgetapp.R;
@@ -13,6 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -23,7 +27,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.budgetapp.databinding.ActivityModifyVersionBinding;
 
-public class ModifyVersion extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class ModifyVersion extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemSelectedListener{
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
@@ -54,6 +58,18 @@ public class ModifyVersion extends AppCompatActivity implements NavigationView.O
 
         setActionBar("Modify Version");
 
+        //SPINNER
+        Spinner spinner = findViewById(R.id.modify_version_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.placeholder_spinner,
+                android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+
+
     }
 
     public void setActionBar(String heading){
@@ -68,11 +84,80 @@ public class ModifyVersion extends AppCompatActivity implements NavigationView.O
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+
+        switch(item.getItemId()){
+            case R.id.create_new_version_nav: {
+                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, CreateVersion.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.modify_version_nav: {
+                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ModifyVersion.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.add_transaction_nav: {
+                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, AddTransaction.class);
+                startActivity(intent);
+                break;
+            }
+//            case R.id.modify_transaction_nav: {
+//                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(this, ModifyTransaction.class);
+//                startActivity(intent);
+//                break;
+//            }
+            case R.id.dashboard_nav: {
+                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.view_version_nav: {
+                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ViewVersion.class);
+                startActivity(intent);
+                break;
+            }
+//            case R.id.view_transaction_nav: {
+//                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(this, ViewTransaction.class);
+//                startActivity(intent);
+//                break;
+//            }case R.id.view_goals_nav: {
+//                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(this, ViewGoals.class);
+//                startActivity(intent);
+//                break;
+//            }case R.id.strategies_nav: {
+//                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(this, Introduction.class);
+//                startActivity(intent);
+//                break;
+//            }
+
+        }
+        return true;
+
     }
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+
+    //SPINNER EXTRAS
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 }

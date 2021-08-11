@@ -1,6 +1,7 @@
 package com.example.budgetapp.Activities;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -86,9 +87,6 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
     VersionViewModel versionViewModel;
     AccountGroupViewModel accountGroupViewModel;
 
-//    int counter_ver = 1;
-//    int counter_gol = 1;
-//    int counter_acc = 1;
 
     //ADD THESE TO GET VALUES
     ArrayList<Integer> goal_id = new ArrayList<Integer>();
@@ -114,7 +112,7 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
         versionViewModel = ViewModelProviders.of(this).get(VersionViewModel.class);
         accountGroupViewModel = ViewModelProviders.of(this).get(AccountGroupViewModel.class);
 
-        observePls();
+        //observePls();
         //versionList = new ArrayList<>();
 
         //SIDEBAR MENU
@@ -377,6 +375,7 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
                 Goal goal_temp = new Goal(versionName);
                 AccountGroup acc_grp_temp = new AccountGroup(versionName);
                 Version version_temp = new Version(versionName);
+
                 //VersionViewModel
                 versionViewModel.insertVersion(version_temp);
 
@@ -387,45 +386,17 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
                 accountGroupViewModel.insertAccountGroup(acc_grp_temp);
 
                 Log.d(TAG, "VERSION, GOAL, ACC GROUP MADE");
-//                Log.d(TAG, "goal_id " + goal_id);
-//                Log.d(TAG, "acc_grp_id " + acc_grp_id);
-//                Log.d(TAG, "essentialsVal " + essentialsVal);
-//                Log.d(TAG, "version_id " + version_id);
 
-//                observePls();
 
                 Log.d(TAG, "AFTER OBSERVE PLS");
 
-                Integer goal_id_val = 0;
-                Integer acc_grp_id_val = 0;
-                Integer version_id_val = 0;
+                GoalDetail essential = new GoalDetail(goal_temp.getGoalName(), acc_grp_temp.getAccountGroupName(),
+                        essentialsVal, version_temp.getVersionName());
 
-                for(Integer num : goal_id){
-                    Log.d(TAG, "GOAL ID IS : " + num);
-                    goal_id_val = num;
-                    Log.d(TAG, "!!!GOAL ID VAL IS :!!! " + goal_id_val);
-                }
-
-                for(Integer num : acc_grp_id){
-                    Log.d(TAG, "ACC GRP ID IS : " + num);
-                    acc_grp_id_val = num;
-                    Log.d(TAG, "!!!ACC GRP ID VAL IS :!!! " + acc_grp_id_val);
-                }
-                for(Integer num : version_id){
-                    Log.d(TAG, "VRESION ID IS : " + num);
-                    version_id_val = num;
-                    Log.d(TAG, "!!!VRESION ID VAL IS :!!! " + version_id_val);
-                }
-//                Log.d(TAG, "AFTER goal_id " + goal_id);
-//                Log.d(TAG, "AFTER acc_grp_id " + acc_grp_id);
-//                Log.d(TAG, "AFTER essentialsVal " + essentialsVal);
-//                Log.d(TAG, "AFTER version_id " + version_id);
-
-
-                GoalDetail essential = new GoalDetail(goal_id.get(goal_id_val), acc_grp_id.get(acc_grp_id_val),
-                        essentialsVal, version_id.get(version_id_val));
-
+                Log.d(TAG, "Goal name " + goal_temp.getGoalName());
+                Log.d(TAG, "Account Group Name  " + acc_grp_temp.getAccountGroupName());
                 Log.d(TAG, "Essential amount " + essential.getAmount());
+                Log.d(TAG, "Version Name " + version_temp.getVersionName());
 
                 goalDetailViewModel.insertGoalDetail(essential);
 
@@ -444,7 +415,7 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
             @Override
             public void onChanged(List<GoalDetail> goalDetails) {
                 for(GoalDetail v : goalDetails){
-                    Log.d(TAG, "goalDetails goal idd = " + v.getGoalID());
+                    Log.d(TAG, "goalDetails goal idd = " + v.getId());
                     Log.d(TAG, "amount  = $" + v.getAmount());
                 }
             }
@@ -453,63 +424,63 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
 
     //Adding observers to versionViewMode, GoalViewModel and Account Group View
     //Checking to see if the database is updated
-    private void observePls() {
-        Log.d(TAG, "observerPls WORKS ");
-        versionViewModel.getAllVersion().observe( this, new Observer<List<Version>>() {
-            @Override
-            public void onChanged(List<Version> versions) {
-                Log.d(TAG, "inside versions onchanged before FOR ");
-                for(Version v : versions) {
-//                        if(v.getVersionName().equals(versionName))
-//                        {
-//                            Log.d(TAG, "INSIDE IF WORKS");
-                    version_id.add(v.getId());
-//                        }
-                    Log.d(TAG, "Version name = " + v.getVersionName());
-                    Log.d(TAG, "Version Id = " + v.getId());
-                    // Log.d(TAG, "ASSINGED Version Id = " + version_id.get());
-                }
-                Log.d(TAG, "inside versions onchanged After FOR ");
-            }
-        });
-        goalViewModel.getAllGoal().observe( this, new Observer<List<Goal>>() {
-            @Override
-            public void onChanged(List<Goal> goals) {
-                Log.d(TAG, "inside goals onchanged before FOR ");
-                for(Goal v : goals) {
-//                    if(v.getGoalName().equals(versionName))
-//                    {
-                    goal_id.add(v.getId());
-//                    }
-                    Log.d(TAG, "Goal name = " + v.getGoalName());
-                    Log.d(TAG, "Goal Id = " + v.getId());
-                    //   Log.d(TAG, "ASSINGED Goal Id = " + goal_id.get(1));
-                }
-                Log.d(TAG, "inside goals onchanged after FOR ");
-            }
-        });
-        accountGroupViewModel.getAllAccountGroup().observe( this, new Observer<List<AccountGroup>>() {
-            @Override
-            public void onChanged(List<AccountGroup> accGroup) {
-                Log.d(TAG, "inside acGroup onchanged before FOR ");
-                for(AccountGroup v : accGroup) {
-//                    if(counter_acc == 1) {
-//                        counter_acc++;
-//                        continue;
-//                    }
-//                    if(v.getAccountGroupName().equals(versionName))
-//                    {
-                    acc_grp_id.add(v.getId());
-//                    }
-                    Log.d(TAG, "AccountGroup name = " + v.getAccountGroupName());
-                    Log.d(TAG, "AccountGroup Id = " + v.getId());
-                    //   Log.d(TAG, "ASSINGED AccountGroup = " + acc_grp_id.get(1));
-                }
-                Log.d(TAG, "inside acGroup onchanged after FOR ");
-            }
-        });
-
-    }
+//    private void observePls() {
+//        Log.d(TAG, "observerPls WORKS ");
+//        versionViewModel.getAllVersion().observe( this, new Observer<List<Version>>() {
+//            @Override
+//            public void onChanged(List<Version> versions) {
+//                Log.d(TAG, "inside versions onchanged before FOR ");
+//                for(Version v : versions) {
+////                        if(v.getVersionName().equals(versionName))
+////                        {
+////                            Log.d(TAG, "INSIDE IF WORKS");
+//                    version_id.add(v.getId());
+////                        }
+//                    Log.d(TAG, "Version name = " + v.getVersionName());
+//                    Log.d(TAG, "Version Id = " + v.getId());
+//                    // Log.d(TAG, "ASSINGED Version Id = " + version_id.get());
+//                }
+//                Log.d(TAG, "inside versions onchanged After FOR ");
+//            }
+//        });
+//        goalViewModel.getAllGoal().observe( this, new Observer<List<Goal>>() {
+//            @Override
+//            public void onChanged(List<Goal> goals) {
+//                Log.d(TAG, "inside goals onchanged before FOR ");
+//                for(Goal v : goals) {
+////                    if(v.getGoalName().equals(versionName))
+////                    {
+//                    goal_id.add(v.getId());
+////                    }
+//                    Log.d(TAG, "Goal name = " + v.getGoalName());
+//                    Log.d(TAG, "Goal Id = " + v.getId());
+//                    //   Log.d(TAG, "ASSINGED Goal Id = " + goal_id.get(1));
+//                }
+//                Log.d(TAG, "inside goals onchanged after FOR ");
+//            }
+//        });
+//        accountGroupViewModel.getAllAccountGroup().observe( this, new Observer<List<AccountGroup>>() {
+//            @Override
+//            public void onChanged(List<AccountGroup> accGroup) {
+//                Log.d(TAG, "inside acGroup onchanged before FOR ");
+//                for(AccountGroup v : accGroup) {
+////                    if(counter_acc == 1) {
+////                        counter_acc++;
+////                        continue;
+////                    }
+////                    if(v.getAccountGroupName().equals(versionName))
+////                    {
+//                    acc_grp_id.add(v.getId());
+////                    }
+//                    Log.d(TAG, "AccountGroup name = " + v.getAccountGroupName());
+//                    Log.d(TAG, "AccountGroup Id = " + v.getId());
+//                    //   Log.d(TAG, "ASSINGED AccountGroup = " + acc_grp_id.get(1));
+//                }
+//                Log.d(TAG, "inside acGroup onchanged after FOR ");
+//            }
+//        });
+//
+//    }
 
     public void setActionBar(String heading){
         ActionBar actionBar = getSupportActionBar();
@@ -523,7 +494,64 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+
+        switch(item.getItemId()){
+            case R.id.create_new_version_nav: {
+                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, CreateVersion.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.modify_version_nav: {
+                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ModifyVersion.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.add_transaction_nav: {
+                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, AddTransaction.class);
+                startActivity(intent);
+                break;
+            }
+//            case R.id.modify_transaction_nav: {
+//                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(this, ModifyTransaction.class);
+//                startActivity(intent);
+//                break;
+//            }
+            case R.id.dashboard_nav: {
+                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.view_version_nav: {
+                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ViewVersion.class);
+                startActivity(intent);
+                break;
+            }
+//            case R.id.view_transaction_nav: {
+//                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(this, ViewTransaction.class);
+//                startActivity(intent);
+//                break;
+//            }case R.id.view_goals_nav: {
+//                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(this, ViewGoals.class);
+//                startActivity(intent);
+//                break;
+//            }case R.id.strategies_nav: {
+//                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(this, Introduction.class);
+//                startActivity(intent);
+//                break;
+//            }
+
+        }
+        return true;
+
     }
 
     @Override

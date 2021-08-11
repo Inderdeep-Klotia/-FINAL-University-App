@@ -154,12 +154,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                startActivity(intent);
 //                break;
 //            }
-//            case R.id.change_goals_nav: {
-//                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(this, ModifyGoals.class);
-//                startActivity(intent);
-//                break;
-//            }
+            case R.id.dashboard_nav: {
+                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+            }
             case R.id.view_version_nav: {
             //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, ViewVersion.class);
