@@ -49,7 +49,8 @@
                 android:fontFamily="@font/roboto_slab_thin"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/modify_version_instruction1" />
+                app:layout_constraintTop_toBottomOf="@+id/modify_version_instruction1"
+                />
 
             <TextView
                 android:id="@+id/modify_version_instruction2"

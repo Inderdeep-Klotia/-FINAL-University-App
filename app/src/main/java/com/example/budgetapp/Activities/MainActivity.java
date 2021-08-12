@@ -93,17 +93,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         //set up buttons
-        Button button_view_version = (Button) findViewById(R.id.button_view_version);
+        //Button button_view_version = (Button) findViewById(R.id.button_view_version);
 
-        View.OnClickListener page_listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Button b = (Button) view;
-                startViewVersion(b);
-            }
-        };
-
-        button_view_version.setOnClickListener(page_listener);
+//        View.OnClickListener page_listener = new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Button b = (Button) view;
+//                //startViewVersion(b);
+//            }
+//        };
+//
+//        button_view_version.setOnClickListener(page_listener);
 
 
 
@@ -122,10 +122,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         anyChartView.setChart(pie);
     }
 
-    public void startViewVersion(View view) {
-        Intent intent = new Intent(this, ViewVersion.class);
-        startActivity(intent);
-    }
+//    public void startViewVersion(View view) {
+//        Intent intent = new Intent(this, ViewVersion.class);
+//        startActivity(intent);
+//    }
 
     //THIS FUNCTION NAVIGATES THROUGH NAV BAR
     @Override
@@ -149,24 +149,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 break;
             }
-//            case R.id.modify_transaction_nav: {
-//                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(this, ModifyTransaction.class);
-//                startActivity(intent);
-//                break;
-//            }
+            case R.id.modify_transaction_nav: {
+                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ModifyTransaction.class);
+                startActivity(intent);
+                break;
+            }
             case R.id.dashboard_nav: {
                 //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 break;
             }
-            case R.id.view_version_nav: {
-            //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, ViewVersion.class);
-            startActivity(intent);
-            break;
-        }
+            case R.id.view_version_nav_view: {
+                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ViewVersion.class);
+                startActivity(intent);
+                break;
+            }
 //            case R.id.view_transaction_nav: {
 //                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
 //                Intent intent = new Intent(this, ViewTransaction.class);
@@ -186,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
         return true;
+
     }
 
     @Override

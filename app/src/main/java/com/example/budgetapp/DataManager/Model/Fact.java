@@ -1,22 +1,38 @@
 package com.example.budgetapp.DataManager.Model;
 
+import android.accounts.Account;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-//semester long info
+/**
+ * Fact
+ * Entity and Transport object for Fact table
+ */
 @Entity
 public class Fact {
     @PrimaryKey (autoGenerate = true)
     int id;
-    String versionName;
-    String accountGroupName;
-    String accountTypeName;
-    double p1;  //semesters
-    double p2;  //semesters
-    double p3;  //semesters
-    double p4;  //semesters
-    double totalSemester; //semesters
+    String versionName;         // Version Name
+    String accountGroupName;    // Account Group
+    String accountTypeName;     // Account Type
+    double p1;                  //semesters
+    double p2;                  //semesters
+    double p3;                  //semesters
+    double p4;                  //semesters
+    double totalSemester;       //total semesters
 
+    /**
+     * Constructor for Fact
+     * @param versionName
+     * @param accountGroupName
+     * @param accountTypeName
+     * @param p1
+     * @param p2
+     * @param p3
+     * @param p4
+     * @param totalSemester
+     */
     public Fact(String versionName, String accountGroupName, String accountTypeName, double p1, double p2, double p3, double p4, double totalSemester) {
         this.versionName = versionName;
         this.accountGroupName = accountGroupName;
@@ -27,6 +43,8 @@ public class Fact {
         this.p4 = p4;
         this.totalSemester = totalSemester;
     }
+
+    // Get and Set methods for Fact
 
     public int getId() {
         return id;

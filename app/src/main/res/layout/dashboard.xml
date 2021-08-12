@@ -86,54 +86,54 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="200dp"
                 android:layout_marginBottom="450dp"
-                android:text="$999"
+                android:text="$0"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/button_view_version"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="175dp"
-                android:fontFamily="@font/roboto_slab_thin"
-                android:text="@string/view_version"
-                android:textStyle="bold"
-                app:backgroundTint="#041E42"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+<!--            <Button-->
+<!--                android:id="@+id/button_view_version"-->
+<!--                android:layout_width="250dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="175dp"-->
+<!--                android:fontFamily="@font/roboto_slab_thin"-->
+<!--                android:text="@string/view_version"-->
+<!--                android:textStyle="bold"-->
+<!--                app:backgroundTint="#041E42"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
 
-            <Button
-                android:id="@+id/button_view_transactions"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="400dp"
-                android:fontFamily="@font/roboto_slab_thin"
-                android:text="@string/view_transaction"
-                android:textStyle="bold"
-                app:backgroundTint="#041E42"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+<!--            <Button-->
+<!--                android:id="@+id/button_view_transactions"-->
+<!--                android:layout_width="250dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="400dp"-->
+<!--                android:fontFamily="@font/roboto_slab_thin"-->
+<!--                android:text="@string/view_transaction"-->
+<!--                android:textStyle="bold"-->
+<!--                app:backgroundTint="#041E42"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
 
-            <Button
-                android:id="@+id/button_view_goals"
-                android:layout_width="250dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="280dp"
-                android:fontFamily="@font/roboto_slab_thin"
-                android:text="@string/view_goals"
-                android:textStyle="bold"
-                app:backgroundTint="#041E42"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+<!--            <Button-->
+<!--                android:id="@+id/button_view_goals"-->
+<!--                android:layout_width="250dp"-->
+<!--                android:layout_height="48dp"-->
+<!--                android:layout_marginTop="280dp"-->
+<!--                android:fontFamily="@font/roboto_slab_thin"-->
+<!--                android:text="@string/view_goals"-->
+<!--                android:textStyle="bold"-->
+<!--                app:backgroundTint="#041E42"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -505,7 +505,6 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
         switch(item.getItemId()){
             case R.id.create_new_version_nav: {
                 //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
@@ -525,19 +524,19 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
                 startActivity(intent);
                 break;
             }
-//            case R.id.modify_transaction_nav: {
-//                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(this, ModifyTransaction.class);
-//                startActivity(intent);
-//                break;
-//            }
+            case R.id.modify_transaction_nav: {
+                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ModifyTransaction.class);
+                startActivity(intent);
+                break;
+            }
             case R.id.dashboard_nav: {
                 //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 break;
             }
-            case R.id.view_version_nav: {
+            case R.id.view_version_nav_view: {
                 //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, ViewVersion.class);
                 startActivity(intent);
@@ -562,6 +561,7 @@ public class CreateVersion extends AppCompatActivity implements NavigationView.O
 
         }
         return true;
+
 
     }
 

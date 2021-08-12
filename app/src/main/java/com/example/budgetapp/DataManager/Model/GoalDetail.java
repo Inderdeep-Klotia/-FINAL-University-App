@@ -3,22 +3,34 @@ package com.example.budgetapp.DataManager.Model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-//Goals
+/**
+ * GoalDetail
+ * Entity and Transport object for GoalDetail table
+ */
 @Entity
 public class GoalDetail {
     @PrimaryKey (autoGenerate = true)
     int id;
-    String goalName;
-    String accountGroupName;
-    String versionName;
-    double amount;
+    String goalName;            // Goal Name
+    String accountGroupName;    // Account Group (Type of Spending or Balance)
+    String versionName;         // Version name
+    double amount;              // Amount
 
+    /**
+     * Constructor for GoalDetail
+     * @param goalName
+     * @param accountGroupName
+     * @param amount
+     * @param versionName
+     */
     public GoalDetail(String goalName, String accountGroupName, double amount, String versionName) {
         this.goalName = goalName;
         this.accountGroupName = accountGroupName;
         this.amount = amount;
         this.versionName = versionName;
     }
+
+    // Get and Set methods for each field
 
     public int getId() {
         return id;

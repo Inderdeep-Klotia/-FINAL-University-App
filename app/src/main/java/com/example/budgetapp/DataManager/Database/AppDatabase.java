@@ -26,8 +26,14 @@ import com.example.budgetapp.DataManager.Model.VersionEntry;
 
 import java.util.concurrent.Executors;
 
-@Database(entities={AccountGroup.class, AccountType.class, Fact.class, Goal.class, GoalDetail.class, Version.class, VersionEntry.class}, version=4, exportSchema = false)
+/**
+ * AppDatabase
+ * Database creation and update
+ */
+
+@Database(entities={AccountGroup.class, AccountType.class, Fact.class, Goal.class, GoalDetail.class, Version.class, VersionEntry.class}, version=6, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase{
+    /* DAO and Database references */
     public abstract AccountGroupDao accountGroupDao();
     public abstract AccountTypeDao accountTypeDao();
     public abstract FactDao factDao();
@@ -37,13 +43,19 @@ public abstract class AppDatabase extends RoomDatabase{
     public abstract VersionEntryDao versionEntryDao();
     private static volatile AppDatabase appDatabase;
 
+    /**
+     * getDatabase
+     * Creates new database if one doesn't exist, otherwise, opens and points to existing database
+     * @param context
+     * @return
+     */
     static AppDatabase getDatabase(final Context context){
         if (appDatabase==null)
         {
             synchronized (AppDatabase.class){
                 appDatabase= Room.databaseBuilder(context.getApplicationContext(),
                         AppDatabase.class,
-                        "App_Database")
+                        "Bud_Database")
                         .fallbackToDestructiveMigration()
                         .addCallback(roomDatabaseCallback)
                         .build();
@@ -54,6 +66,7 @@ public abstract class AppDatabase extends RoomDatabase{
         return appDatabase;
     }
 
+    /* Callback to either open or create database */
     private static RoomDatabase.Callback roomDatabaseCallback= new Callback() {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
@@ -63,15 +76,15 @@ public abstract class AppDatabase extends RoomDatabase{
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
             new PopularDBAsync(appDatabase).execute();
-            new PopulateDBAsync(appDatabase).execute();
+            new PopulateDBAsync(appDatabase).execute(); // Pre-populates tables on creation
         }
     };
 
+    // Pre-populates data for AccountGroup and AccountType tables on database creation
     private static class PopulateDBAsync extends AsyncTask<Void,Void,Void>{
-        private final AccountGroupDao agDao;
-        public PopulateDBAsync(AppDatabase adb){
 
-            this.agDao = adb.accountGroupDao();
+        public PopulateDBAsync(AppDatabase adb){
+            /*AccountGroup population data */
             AccountGroup[] accountGroups = new AccountGroup[]{
                     new AccountGroup("Essential"),
                     new AccountGroup("NonEssential"),
@@ -80,6 +93,7 @@ public abstract class AppDatabase extends RoomDatabase{
                     new AccountGroup("Income"),
                     new AccountGroup("Expenses")
             };
+            /* Populate AccountGroup data */
             Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
                 @Override
                 public void run() {
@@ -89,6 +103,36 @@ public abstract class AppDatabase extends RoomDatabase{
                 }
             });
 
+            /* AccountType population data */
+            AccountType[] accountTypes = new AccountType[]{
+                    new AccountType("Entertainment","NonEssential","Expense",'-',-1),
+                    new AccountType("Rent","Essential","Expense",'-',-1),
+                    new AccountType("Student Loan","Balance","Revenue",'+',1),
+                    new AccountType("Groceries","Essential","Expense",'-',-1),
+                    new AccountType("Fixed Housing Expenses","Essential","Expense",'-',-1),
+                    new AccountType("Utilities","Essential","Expense",'-',-1),
+                    new AccountType("Transportation","Essential","Expense",'-',-1),
+                    new AccountType("Textbooks","Essential","Expense",'-',-1),
+                    new AccountType("School Supplies","Essential","Expense",'-',-1),
+                    new AccountType("Student Fees","Essential","Expense",'-',-1),
+                    new AccountType("Miscellaneous","NonEssential","Expense",'-',-1),
+                    new AccountType("Fast Food","NonEssential","Expense",'-',-1),
+                    new AccountType("Scholarships","Balance","Revenue",'+',1),
+                    new AccountType("Total Account Balance","Savings","Revenue",'+',1),
+                    new AccountType("Parent Allowance","Balance","Revenue",'+',1),
+                    new AccountType("Parent Gift [Large Monies]","Balance","Revenue",'+',1),
+                    new AccountType("Job","Balance","Revenue",'+',1)
+            };
+
+            /* Populate AccountType data */
+            Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
+                @Override
+                public void run() {
+                    for(AccountType at : accountTypes) {
+                        adb.accountTypeDao().insertAccountType(at);
+                    }
+                }
+            });
         }
 
         @Override
@@ -98,6 +142,7 @@ public abstract class AppDatabase extends RoomDatabase{
     }
 
 
+    /* Creates/Updates Schema from DAO */
     private static class PopularDBAsync extends AsyncTask<Void,Void,Void>{
         private final AccountGroupDao agDao;
         private final AccountTypeDao atDao;

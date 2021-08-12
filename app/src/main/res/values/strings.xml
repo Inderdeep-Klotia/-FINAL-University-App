@@ -61,15 +61,10 @@
     </string>
 
     <string name="fifty_text">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Sed facilisis blandit mi, ac ultrices nulla condimentum non.
-        Quisque a ultricies turpis. Suspendisse mattis pellentesque
-        sem, eu mollis nibh. Lorem ipsum dolor sit amet, consectetur
-        adipiscing elit. Mauris interdum aliquet efficitur. Aliquam sed
-        turpis a tortor feugiat sodales sed rutrum ante. Fusce id convallis
-        est. Quisque in tellus a massa accumsan tempus eget eget elit. Fusce
-        elementum enim a urna luctus rutrum. Donec sit amet tortor diam. Aliquam
-        semper dapibus porttitor.
+       The 50/30/20 budgeting rule by US Senator Elizabeth Warren
+        divides your after-tax income into three categories:
+        50% for needs, 30% for wants, and 20% for savings. Your “needs”
+        include obligatory expenses like rent.
     </string>
 
     <string name="hello_first_fragment">Hello first fragment</string>

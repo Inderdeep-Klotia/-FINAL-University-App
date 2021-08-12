@@ -1,5 +1,10 @@
 package com.example.budgetapp.Activities;
 
+/**
+ * THIS WORKS - UPDATES THE INCOME AND EXPENSE WITH THE VERSION NAME
+ */
+
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -75,6 +80,9 @@ public class ModifyVersion extends AppCompatActivity implements NavigationView.O
     private Button saveButton;
 
     private String versionName;
+    private String newVersionName;
+    
+    
     private Double estimateIncome= 0.0;
     private Double estimateExpenses = 0.0;
     private Double essentialsVal = 0.0;
@@ -85,6 +93,11 @@ public class ModifyVersion extends AppCompatActivity implements NavigationView.O
     private Double savingsValStart;
     private Double balance = 0.0;
 
+    private Double fifty = 0.0;
+    private Double thirty = 0.0;
+    private Double twenty = 0.0;
+
+    ArrayList<String> versionSpinnerArray = new ArrayList<String>();
     Integer goalID = 0;
 
     //DATA VIEW MODEL
@@ -106,7 +119,7 @@ public class ModifyVersion extends AppCompatActivity implements NavigationView.O
         accountGroupViewModel = ViewModelProviders.of(this).get(AccountGroupViewModel.class);
 
         //SPINNER ARRAY
-        ArrayList<String> versionSpinnerArray = new ArrayList<String>();
+//        ArrayList<String> versionSpinnerArray = new ArrayList<String>();
         versionSpinnerArray.add("Select a Version");
 
         //Buttons and choices
@@ -153,8 +166,12 @@ public class ModifyVersion extends AppCompatActivity implements NavigationView.O
                 versionName = adapterView.getItemAtPosition(i).toString();
                 Log.d(TAG, "Selected Version name is : " + versionName);
                 versionNameEntry.setText(versionName);
+
+                //THIS IS BIG CHANGE
+                newVersionName = versionName.concat(" ");
                 //SETTING GOAL DETAIL OBSERVER
                 observeGD();
+
 
                 Log.d(TAG, "estimateIncome is : " + estimateIncome);
                 Log.d(TAG, "estimateExpenses is : " + estimateExpenses);
@@ -162,19 +179,22 @@ public class ModifyVersion extends AppCompatActivity implements NavigationView.O
                 estimateIncomeEntry.append(estimateIncome.toString());
                 estimateExpensesEntry.setText("$");
                 estimateExpensesEntry.append(estimateExpenses.toString());
-                // estimateIncomeEntry.setText(estimateIncome.toString());
 
                 essentialsBar.setProgress(50, true);
                 nonessentialsBar.setProgress(30, true);
                 savingsBar.setProgress(20, true);
 
-                Double fifty = estimateIncome * 0.5;
-                Double thirty = estimateIncome * 0.3;
-                Double twenty = estimateIncome * 0.2;
+//                Double fifty = estimateIncome * 0.5;
+//                Double thirty = estimateIncome * 0.3;
+//                Double twenty = estimateIncome * 0.2;
 
-                Double fiftyPercent = (fifty/estimateIncome) * 100;
-                Double thirtyPercent = (thirty/estimateIncome) * 100;
-                Double twentyPercent = (twenty/estimateIncome) * 100;
+                Double tmp_fifty_percent = ((fifty/estimateIncome) * 100);
+                Double tmp_thirty_percent = ((thirty/estimateIncome) * 100);
+                Double tmp_twenty_percent = ((twenty/estimateIncome) * 100);
+
+                Integer fiftyPercent = tmp_fifty_percent.intValue();
+                Integer thirtyPercent = tmp_thirty_percent.intValue();
+                Integer twentyPercent = tmp_twenty_percent.intValue();
 
                 essentialsEntry.setText("$");
                 essentialsEntry.append(fifty.toString());
@@ -202,26 +222,38 @@ public class ModifyVersion extends AppCompatActivity implements NavigationView.O
             }
         });
 
-        //SETTING UP LISTENERS
+        //SETTING UP LISTENERS - ALSO IMPORTANT
         //entryTextWatcher controls the listening of all the three entries.
 
+        estimateIncomeEntry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                estimateIncomeEntry.setText("");
+            }
+        });
+        estimateExpensesEntry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                estimateExpensesEntry.setText("");
+            }
+        });
+
         TextWatcher entryTextWatcher = new TextWatcher() {
-            String enteredIncome;
-            String enteredExpense;
-            String enteredVName;
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                enteredIncome = estimateIncomeEntry.getText().toString();
-                enteredExpense = estimateExpensesEntry.getText().toString();
-                enteredVName = versionNameEntry.getText().toString();
 
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//                String enteredIncome = estimateIncomeEntry.getText().toString();
-//                String enteredExpense = estimateExpensesEntry.getText().toString();
-//                String enteredVName = versionNameEntry.getText().toString();
+
+                String enteredIncome;
+                String enteredExpense;
+                String enteredVName;
+
+                    enteredIncome = estimateIncomeEntry.getText().toString();
+                    enteredExpense = estimateExpensesEntry.getText().toString();
+                    enteredVName = versionNameEntry.getText().toString();
 
                 saveButton.setEnabled(!enteredVName.isEmpty() && !enteredIncome.isEmpty()
                         && !enteredExpense.isEmpty());
@@ -292,9 +324,9 @@ public class ModifyVersion extends AppCompatActivity implements NavigationView.O
             }
         };
 
-//        estimateIncomeEntry.addTextChangedListener(entryTextWatcher);
-//        estimateExpensesEntry.addTextChangedListener(entryTextWatcher);
-//        versionNameEntry.addTextChangedListener(entryTextWatcher);
+        estimateIncomeEntry.addTextChangedListener(entryTextWatcher);
+        estimateExpensesEntry.addTextChangedListener(entryTextWatcher);
+        versionNameEntry.addTextChangedListener(entryTextWatcher);
 
 
         //SIDEBAR MENU
@@ -470,9 +502,56 @@ public class ModifyVersion extends AppCompatActivity implements NavigationView.O
             public void onClick(View view) {
                 Log.d(TAG, "SAVE BUTTON IS CLICKED");
 
-//                GoalDetail gd_changed  = setObserveGD();
-                setObserveGD();
-//                goalDetailViewModel.updateGoalDetail(gd_changed);
+                Log.d(TAG, "newVersionName = " + newVersionName);
+
+                Goal goal_temp = new Goal(newVersionName);
+                //AccountGroup acc_grp_temp = new AccountGroup(versionName);
+                Version version_temp = new Version(newVersionName);
+
+                //VersionViewModel
+                versionViewModel.insertVersion(version_temp);
+
+                //GoalViewModel
+                goalViewModel.insertGoal(goal_temp);
+
+                //AccountGroupViewModel
+                //accountGroupViewModel.insertAccountGroup();
+
+                Log.d(TAG, "VERSION, GOAL, ACC GROUP MADE");
+
+
+                Log.d(TAG, "AFTER OBSERVE PLS");
+
+                Log.d(TAG, "essentialsVal is " + essentialsVal);
+
+
+                GoalDetail essential = new GoalDetail(goal_temp.getGoalName(), "Essential",
+                        essentialsVal, version_temp.getVersionName());
+
+                GoalDetail nonessential = new GoalDetail(goal_temp.getGoalName(), "NonEssential",
+                        nonessentialsVal, version_temp.getVersionName());
+
+                GoalDetail savings = new GoalDetail(goal_temp.getGoalName(), "Savings",
+                        savingsVal, version_temp.getVersionName());
+
+                GoalDetail income = new GoalDetail(goal_temp.getGoalName(), "Income",
+                        estimateIncome, version_temp.getVersionName());
+
+                GoalDetail expenses = new GoalDetail(goal_temp.getGoalName(), "Expenses",
+                        estimateExpenses, version_temp.getVersionName());
+
+                Log.d(TAG, "Goal name " + goal_temp.getGoalName());
+                // Log.d(TAG, "Account Group Name  " + acc_grp_temp.getAccountGroupName());
+                Log.d(TAG, "Essential amount " + essential.getAmount());
+                Log.d(TAG, "Version Name " + version_temp.getVersionName());
+
+                goalDetailViewModel.insertGoalDetail(essential);
+                goalDetailViewModel.insertGoalDetail(nonessential);
+                goalDetailViewModel.insertGoalDetail(savings);
+                goalDetailViewModel.insertGoalDetail(income);
+                goalDetailViewModel.insertGoalDetail(expenses);
+
+                DeleteObserveGD();
 
                 openDialog();
             }
@@ -494,6 +573,17 @@ public class ModifyVersion extends AppCompatActivity implements NavigationView.O
                     //Expense
                     if(gd.getAccountGroupName().equals("Expenses") && gd.getVersionName().equals(versionName)){
                         estimateExpenses = gd.getAmount();
+                        goalID = gd.getId();
+                    }
+                    if(gd.getAccountGroupName().equals("Essential") && gd.getVersionName().equals(versionName)){
+                        fifty = gd.getAmount();
+
+                    }
+                    if(gd.getAccountGroupName().equals("NonEssential") && gd.getVersionName().equals(versionName)){
+                        thirty = gd.getAmount();
+                    }
+                    if(gd.getAccountGroupName().equals("Savings") && gd.getVersionName().equals(versionName)){
+                        twenty = gd.getAmount();
                     }
 
                 }
@@ -501,53 +591,49 @@ public class ModifyVersion extends AppCompatActivity implements NavigationView.O
         });
     }
 
-    private void setObserveGD() {
+    private void DeleteObserveGD() {
 
 
         goalDetailViewModel.getAllGoalDetail().observe(this, new Observer<List<GoalDetail>>() {
+                    @Override
+                    public void onChanged(List<GoalDetail> goalDetails) {
+                        Log.d(TAG, "OBSERVE GD WORKS");
+                        for (GoalDetail gd : goalDetails) {
+                            //Income
+//                        Log.d(TAG, "gd. account group name " + gd.getAccountGroupName() + "gd. amount is " + gd.getAmount());
+//                        Log.d(TAG, "gd. version group name " + gd.getVersionName() + "gd. amount is " + gd.getAmount());
+                            if (gd.getAccountGroupName().equals("Income") && gd.getVersionName().equals(versionName)) {
+                                goalDetailViewModel.deleteGoalDetail(gd);
+                            }
+                            //Expense
+                            if (gd.getAccountGroupName().equals("Expenses") && gd.getVersionName().equals(versionName)) {
+                                goalDetailViewModel.deleteGoalDetail(gd);
+                            }
+                            if(gd.getAccountGroupName().equals("Essential") && gd.getVersionName().equals(versionName)){
+                                goalDetailViewModel.deleteGoalDetail(gd);
+
+                            }
+                            if(gd.getAccountGroupName().equals("NonEssential") && gd.getVersionName().equals(versionName)){
+                                goalDetailViewModel.deleteGoalDetail(gd);
+                            }
+                            if(gd.getAccountGroupName().equals("Savings") && gd.getVersionName().equals(versionName)){
+                                goalDetailViewModel.deleteGoalDetail(gd);
+                            }
+
+                        }
+                    }
+                });
+
+        //USE THIS TO DELTE THE ENTRIES FROM
+        versionViewModel.getAllVersion().observe(this, new Observer<List<Version>>() {
             @Override
-            public void onChanged(List<GoalDetail> goalDetails) {
-                Log.d(TAG, "SET OBSERVE GD WORKS");
-                for (GoalDetail gd : goalDetails) {
-                    if(gd.getId() == goalID && gd.getAccountGroupName().equals("Income")){
-                        Log.d(TAG, "INSIDE IF GD WORKS");
-                        gd.setVersionName(versionName);
-                        gd.setGoalName(versionName);
-                        Log.d(TAG, "estimateIncome " + estimateIncome);
-                        gd.setAmount(estimateIncome);
-                        goalDetailViewModel.updateGoalDetail(gd);
-                    }
-                    if(gd.getId() == goalID && gd.getAccountGroupName().equals("Expenses")){
-                        gd.setVersionName(versionName);
-                        gd.setGoalName(versionName);
-                        gd.setAmount(estimateExpenses);
-                        Log.d(TAG, "estimateIncome " + estimateExpenses);
-                        goalDetailViewModel.updateGoalDetail(gd);
-                    }
-                    if(gd.getId() == goalID && gd.getAccountGroupName().equals("Essential")){
-                        gd.setVersionName(versionName);
-                        gd.setGoalName(versionName);
-                        gd.setAmount(essentialsVal);
-                        Log.d(TAG, "estimateIncome " + essentialsVal);
-                        goalDetailViewModel.updateGoalDetail(gd);
-                    }
-                    if(gd.getId() == goalID && gd.getAccountGroupName().equals("NonEssential")){
-                        gd.setVersionName(versionName);
-                        gd.setGoalName(versionName);
-                        gd.setAmount(nonessentialsVal);
-                        Log.d(TAG, "estimateIncome " + nonessentialsVal);
-                        goalDetailViewModel.updateGoalDetail(gd);
-                    }
-                    if(gd.getId() == goalID && gd.getAccountGroupName().equals("Savings")){
-                        gd.setVersionName(versionName);
-                        gd.setGoalName(versionName);
-                        gd.setAmount(savingsVal);
-                        Log.d(TAG, "estimateIncome " + savingsVal);
-                        goalDetailViewModel.updateGoalDetail(gd);
-                    }
+            public void onChanged(List<Version> versions) {
+                for (Version v : versions) {
+                   if(v.getVersionName().equals(versionName)){
+                       versionViewModel.deleteVersion(v);
+                   }
                 }
-                Log.d(TAG, "SET OBSERVE GD FOR LOOP COMPLETE");
-//                goalDetailViewModel.updateGoalDetail(gd_out);
+
             }
         });
 
@@ -591,19 +677,19 @@ public class ModifyVersion extends AppCompatActivity implements NavigationView.O
                 startActivity(intent);
                 break;
             }
-//            case R.id.modify_transaction_nav: {
-//                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(this, ModifyTransaction.class);
-//                startActivity(intent);
-//                break;
-//            }
+            case R.id.modify_transaction_nav: {
+                //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ModifyTransaction.class);
+                startActivity(intent);
+                break;
+            }
             case R.id.dashboard_nav: {
                 //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 break;
             }
-            case R.id.view_version_nav: {
+            case R.id.view_version_nav_view: {
                 //Toast.makeText(this, "create_version is pressed", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, ViewVersion.class);
                 startActivity(intent);

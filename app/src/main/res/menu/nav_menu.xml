@@ -12,7 +12,7 @@
             <item android:title="@string/add_transaction"
                 android:id="@+id/add_transaction_nav"
                 android:icon="@drawable/outline_add_white_48" />
-            <item android:title="@string/modify_transaction"
+            <item android:title="Delete Transaction"
                 android:id="@+id/modify_transaction_nav"
                 android:icon="@drawable/outline_add_white_48" />
             <item android:title="Dashboard"
@@ -22,22 +22,22 @@
         </menu>
     </item>
 
-    <item android:title="Navigate">
-        <menu>
-            <item android:title="@string/view_version"
-                android:id="@+id/view_version_nav"
-                android:icon="@drawable/outline_menu_white_48" />
-            <item android:title="@string/view_transaction"
-                android:id="@+id/view_transaction_nav"
-                android:icon="@drawable/outline_menu_white_48" />
-            <item android:title="@string/view_goals"
-                android:id="@+id/view_goals_nav"
-                android:icon="@drawable/outline_menu_white_48" />
-            <item android:title="@string/strategies"
-                android:id="@+id/strategies_nav"
-                android:icon="@drawable/outline_add_white_48" />
+<!--    <item android:title="Navigate">-->
+<!--        <menu>-->
+<!--            <item android:title="@string/view_version"-->
+<!--                android:id="@+id/view_version_nav"-->
+<!--                android:icon="@drawable/outline_menu_white_48" />-->
+<!--            <item android:title="@string/view_transaction"-->
+<!--                android:id="@+id/view_transaction_nav"-->
+<!--                android:icon="@drawable/outline_menu_white_48" />-->
+<!--            <item android:title="@string/view_goals"-->
+<!--                android:id="@+id/view_goals_nav"-->
+<!--                android:icon="@drawable/outline_menu_white_48" />-->
+<!--            <item android:title="@string/strategies"-->
+<!--                android:id="@+id/strategies_nav"-->
+<!--                android:icon="@drawable/outline_add_white_48" />-->
 
-        </menu>
+<!--        </menu>-->
 
-    </item>
+<!--    </item>-->
 </menu>

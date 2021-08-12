@@ -11,8 +11,16 @@ import com.example.budgetapp.DataManager.Model.AccountType;
 
 import java.util.List;
 
+/**
+ * AccountTypeDao
+ * DAO interface for AccountType entity.
+ * Contains Insert, Update, Delete and Queries necessary for implementation
+ */
+
 @Dao
 public interface AccountTypeDao {
+
+    // DAO Queries for AccountType
 
     @Insert
     void insertAccountType(AccountType accountType);
@@ -23,10 +31,12 @@ public interface AccountTypeDao {
     @Delete
     void deleteAccountType(AccountType accountType);
 
+    // Query to return all Account Types
     @Query("Select * From AccountType Order By id DESC")
     LiveData<List<AccountType>> getAllAccountType();
 
+    // Query to return a specific Account Type
     @Query("Select * From AccountType Where accountTypeName = :accountTypeName")
-    List<AccountType> getAccountType(String accountTypeName);
+    AccountType getAccountType(String accountTypeName);
 }
 

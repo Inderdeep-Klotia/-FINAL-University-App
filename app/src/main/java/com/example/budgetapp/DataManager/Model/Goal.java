@@ -3,20 +3,25 @@ package com.example.budgetapp.DataManager.Model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-//goals
-//create/modify version
+/**
+ * Goal
+ * Entity and Transport object for Goal table
+ */
 @Entity
 public class Goal {
     @PrimaryKey (autoGenerate = true)
     int id;
-    String goalName;
-    //boolean currentGoal;
+    String goalName; // Goal Name
 
+    /**
+     * Constructor for Goal
+     * @param goalName
+     */
     public Goal(String goalName) {
         this.goalName = goalName;
-        //this.currentGoal = currentGoal;
-
     }
+
+    // Get and Set Methods for each field
 
     public int getId() {
         return id;
@@ -34,12 +39,5 @@ public class Goal {
         this.goalName = goalName;
     }
 
-    //public boolean getCurrentGoal() {
-       // return currentGoal;
-    //}
-
-    //public void setCurrentGoal(boolean currentGoal) {
-       // this.currentGoal = currentGoal;
-    //}
 }
 

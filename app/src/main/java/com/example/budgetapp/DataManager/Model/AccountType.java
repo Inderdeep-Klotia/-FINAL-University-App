@@ -4,20 +4,28 @@ package com.example.budgetapp.DataManager.Model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-//takes accountgroups
-//Add transactions
-//version stuff
+/**
+ * Account Type
+ * Entity and Transport object for Account Type table
+ */
 @Entity
 public class AccountType {
     @PrimaryKey (autoGenerate = true)
     int id;
-    String accountTypeName;
-    String accountGroupName;
-    String accountClassName;
-    char creditSign; //we'll hard code it
-    int creditSignMultiplier;
+    String accountTypeName;     // Account Type
+    String accountGroupName;    // Account Group
+    String accountClassName;    // Account Class
+    char creditSign;            // Credit Sign (+ for revenue, - for expense)
+    int creditSignMultiplier;   // Multiplier (1 for revenue, -1 for expense)
 
-
+    /**
+     * Constructor for Account Type
+     * @param accountTypeName
+     * @param accountGroupName
+     * @param accountClassName
+     * @param creditSign
+     * @param creditSignMultiplier
+     */
     public AccountType(String accountTypeName, String accountGroupName, String accountClassName, char creditSign, int creditSignMultiplier) {
         this.accountTypeName = accountTypeName;
         this.accountGroupName = accountGroupName;
@@ -26,6 +34,7 @@ public class AccountType {
         this.creditSignMultiplier = creditSignMultiplier;
     }
 
+    // Get and Set methods for Account Type
     public int getId() {
         return id;
     }
